@@ -1,0 +1,41 @@
+body{
+    background-color:white;
+}
+
+.middle-board{
+    max-width: 350px;
+    min-height: 500px;
+    border-radius: 0.5rem;
+    background-color: white;
+    border-top: 15px solid #df5334;
+    box-shadow: 0 0px 70px rgba(0, 0, 0, 0.1);
+
+}
+
+input {
+    border-style:solid;
+    height:50px;
+  }
+
+#style{
+    border-radius: 5px;
+    color: #df5334;
+}
+
+.submit{
+    border-radius: 0.5rem;
+    width:230px;
+    color:white;
+    background-color: #df5334;
+}
+
+
+.h6{
+    text-decoration: none;
+    color:darkgray
+}
+.h6:hover{
+    text-decoration: none;
+    color:gray;
+    font-size:17px;
+}
