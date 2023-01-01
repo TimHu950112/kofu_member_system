@@ -291,7 +291,7 @@ def forget_page():
 
 
 
-app.run(use_reloader=False,debug=True,port=5000)
+app.run(port=5000)
 
 
 
