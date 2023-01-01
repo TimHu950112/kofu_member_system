@@ -290,8 +290,8 @@ def forget_page():
     return render_template("forget.html")
 
 
-
-app.run(port=5000)
+if __name__=='__main__':
+    app.run(port=5000)
 
 
 
