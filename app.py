@@ -117,11 +117,17 @@ def search():
     session["phone"]=request.form["phone"]
     collection=db.new
     result=collection.find_one({"phone":session["phone"]})
-    if result==None:
+
+    collection=db.user
+    result_1=collection.find_one({"phone":session["phone"]})
+    
+    if result_1 !=None:
+        return render_template("function.html",status=result_1["member_name"])
+    if result !=None:
+            return render_template("function.html",status=result["member_name"])
+    else:
         flash("查無資料")
         return render_template("function.html",status="無資料")
-    else:
-        return render_template("function.html",status=result["member_name"])
 
 
 
