@@ -323,6 +323,9 @@ def add_order_item():
     # if not session["item_number_dict"]:
     #     session["item_number_dict"]={"1":0,"2":0,"3":0,"4":0}
     #     print(session["item_number_dict"])
+    if not request.form['number']:
+        flash("請輸入數量")
+        return redirect("/add_order_page")
     nickname=session["nickname"]
     session["item"]=request.form['item']
     session["number"]= int(request.form['number'])
@@ -358,6 +361,9 @@ def add_order_item():
 
 @app.route("/finish_order",methods=["GET","POST"])
 def finish_order():
+    if not request.form['order-time']:
+        flash("請輸入日期")
+        return redirect("/add_order_page")
     session["phone"]=request.form['phone']
     session["date"]=request.form['order-time']
     session["date"]=session["date"].replace("T","-").split("-")
