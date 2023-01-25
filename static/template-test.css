@@ -12,6 +12,15 @@ body{
 
 }
 
+.middle-board2{
+    max-width: 350px;
+    min-height: 500px;
+    border-radius: 0.5rem;
+    background-color: white;
+    border-top: 15px solid #0bc2f4;
+    box-shadow: 0 0px 70px rgba(0, 0, 0, 0.1);
+}
+
 input {
     border-style:solid;
     height:50px;
@@ -22,12 +31,25 @@ input {
     color: #df5334;
 }
 
+#style2{
+    border-radius: 5px;
+    color: #0bc2f4;
+}
+
 .submit{
     border-radius: 0.5rem;
     width:230px;
     color:white;
     background-color: #df5334;
 }
+
+.submit2{
+    border-radius: 0.5rem;
+    width:230px;
+    color:white;
+    background-color:  #0bc2f4;
+}
+
 
 
 .h6{

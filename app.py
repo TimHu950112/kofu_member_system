@@ -296,8 +296,87 @@ def forget_page():
     return render_template("forget.html")
 
 
+@app.route("/order_page")
+def order_page():
+    if "nickname" in session:
+        nickname=session["nickname"]
+        return render_template("order_page.html",nickname=nickname)
+    flash("請先登入")
+    return redirect("/")
+
+@app.route("/add_order_page")
+def add_order_page():
+    if "nickname" in session:
+        nickname=session["nickname"]
+        try:
+            del session["item_number_dict"]
+            print("delete_last_item")
+        except:
+            print("no item")
+        session["item_number_dict"]={"1":0,"2":0,"3":0,"4":0}
+        return render_template("add_order_page.html",nickname=nickname)
+    flash("請先登入")
+    return redirect("/")
+
+@app.route("/add_order_item" ,methods=["GET","POST"])
+def add_order_item():
+    # if not session["item_number_dict"]:
+    #     session["item_number_dict"]={"1":0,"2":0,"3":0,"4":0}
+    #     print(session["item_number_dict"])
+    nickname=session["nickname"]
+    session["item"]=request.form['item']
+    session["number"]= int(request.form['number'])
+    session["item_number_dict"][session["item"]]= int(session["item_number_dict"][session["item"]])+session["number"]
+
+    original="原味肉粽"
+    original_number= session["item_number_dict"]["1"]
+
+    if session["item_number_dict"]["1"]==0:
+        print("delete1")
+        original=""
+        original_number= ""
+
+    scallops="干貝粽"
+    scallops_number=session["item_number_dict"]["2"]
+    if session["item_number_dict"]["2"]==0:
+        scallops=""
+        scallops_number=""
+
+    scallops_abalone="干貝鮑魚粽"
+    scallops_abalone_number=session["item_number_dict"]["3"]
+    if session["item_number_dict"]["3"]==0:
+        scallops_abalone=""
+        scallops_abalone_number=""
+
+    Alkali="鹼粽"
+    Alkali_number=session["item_number_dict"]["4"]
+    if session["item_number_dict"]["4"]==0:
+        Alkali=""
+        Alkali_number=""
+    print("更改後",session["item_number_dict"])
+    return render_template("add_order_page.html",original=original,original_number=original_number,scallops=scallops,scallops_number=scallops_number,scallops_abalone=scallops_abalone,scallops_abalone_number=scallops_abalone_number,Alkali=Alkali,Alkali_number=Alkali_number,nickname=nickname)
+
+@app.route("/finish_order",methods=["GET","POST"])
+def finish_order():
+    session["phone"]=request.form['phone']
+    session["date"]=request.form['order-time']
+    session["date"]=session["date"].replace("T","-").split("-")
+    collection=db.order
+    collection.insert_one({
+    "phone":session["phone"],
+    "原味肉粽":session["item_number_dict"]["1"],
+    "干貝粽":session["item_number_dict"]["2"],
+    "干貝鮑魚粽":session["item_number_dict"]["3"],
+    "鹼粽":session["item_number_dict"]["4"],
+    "date":{"year":session["date"][0],"month":session["date"][1],"day":session["date"][2],"time":session["date"][3]}
+    })
+    del session["item_number_dict"]
+    session["item_number_dict"]={"1":0,"2":0,"3":0,"4":0}
+    flash("訂購成功")
+    return render_template("add_order_page.html")
+
 if __name__=='__main__':
-    app.run(port=5000)
+    app.run(port=5000,debug=True)
 
 
 
