@@ -313,8 +313,25 @@ def add_order_page():
             print("delete_last_item")
         except:
             print("no item")
+        session["item_price_dict"]={"1":80,"2":80,"3":80,"4":80}
         session["item_number_dict"]={"1":0,"2":0,"3":0,"4":0}
-        return render_template("add_order_page.html",nickname=nickname)
+        original_price=session["item_price_dict"]["1"]
+        scallops_price=session["item_price_dict"]["2"]
+        scallops_abalone_price=session["item_price_dict"]["3"]
+        Alkali_price=session["item_price_dict"]["4"]
+        return render_template("add_order_page.html",nickname=nickname,original_price=original_price,scallops_price=scallops_price,scallops_abalone_price=scallops_abalone_price,Alkali_price=Alkali_price)
+    flash("請先登入")
+    return redirect("/")
+
+@app.route("/edit_price", methods=["GET","POST"])
+def edit_price():
+    if "nickname" in session:
+        session["item_price_dict"]={"1":int(request.form['original_price']),"2":int(request.form['scallops_price']),"3":int(request.form['scallops_abalone_price']),"4":int(request.form['Alkali_price'])}
+        original_price=session["item_price_dict"]["1"]
+        scallops_price=session["item_price_dict"]["2"]
+        scallops_abalone_price=session["item_price_dict"]["3"]
+        Alkali_price=session["item_price_dict"]["4"]
+        return render_template("add_order_page.html",original_price=original_price,scallops_price=scallops_price,scallops_abalone_price=scallops_abalone_price,Alkali_price=Alkali_price)
     flash("請先登入")
     return redirect("/")
 
@@ -331,7 +348,7 @@ def add_order_item():
     session["number"]= int(request.form['number'])
     session["item_number_dict"][session["item"]]= int(session["item_number_dict"][session["item"]])+session["number"]
 
-    original="原味肉粽"
+    original="原味肉粽$"+str(session["item_price_dict"]["1"])+"元"
     original_number= session["item_number_dict"]["1"]
 
     if session["item_number_dict"]["1"]==0:
@@ -339,30 +356,42 @@ def add_order_item():
         original=""
         original_number= ""
 
-    scallops="干貝粽"
+    scallops="干貝粽$"+str(session["item_price_dict"]["2"])+"元"
     scallops_number=session["item_number_dict"]["2"]
     if session["item_number_dict"]["2"]==0:
         scallops=""
         scallops_number=""
 
-    scallops_abalone="干貝鮑魚粽"
+    scallops_abalone="干貝鮑魚粽$"+str(session["item_price_dict"]["3"])+"元"
     scallops_abalone_number=session["item_number_dict"]["3"]
     if session["item_number_dict"]["3"]==0:
         scallops_abalone=""
         scallops_abalone_number=""
 
-    Alkali="鹼粽"
+    Alkali="鹼粽$"+str(session["item_price_dict"]["4"])+"元"
     Alkali_number=session["item_number_dict"]["4"]
     if session["item_number_dict"]["4"]==0:
         Alkali=""
         Alkali_number=""
+    print(session["item_price_dict"]["1"])
+    print(session["item_price_dict"]["2"])
+    print(session["item_price_dict"]["3"])
+    print(session["item_price_dict"]["4"])
+    cost_number=session["item_number_dict"]["1"]*session["item_price_dict"]["1"]+session["item_number_dict"]["2"]*session["item_price_dict"]["2"]+session["item_number_dict"]["3"]*session["item_price_dict"]["3"]+session["item_number_dict"]["4"]*session["item_price_dict"]["4"]
+    cost="總金額："
+    if cost_number==0:
+        cost=""
+        cost_number=""
     print("更改後",session["item_number_dict"])
-    return render_template("add_order_page.html",original=original,original_number=original_number,scallops=scallops,scallops_number=scallops_number,scallops_abalone=scallops_abalone,scallops_abalone_number=scallops_abalone_number,Alkali=Alkali,Alkali_number=Alkali_number,nickname=nickname)
+    return render_template("add_order_page.html",original=original,original_number=original_number,scallops=scallops,scallops_number=scallops_number,scallops_abalone=scallops_abalone,scallops_abalone_number=scallops_abalone_number,Alkali=Alkali,Alkali_number=Alkali_number,nickname=nickname,cost=cost,cost_number=cost_number,original_price=session["item_price_dict"]["1"],scallops_price=session["item_price_dict"]["2"],scallops_abalone_price=session["item_price_dict"]["3"],Alkali_price=session["item_price_dict"]["4"])
 
 @app.route("/finish_order",methods=["GET","POST"])
 def finish_order():
     if not request.form['order-time']:
         flash("請輸入日期")
+        return redirect("/add_order_page")
+    if not request.form['phone']:
+        flash("請輸入電話")
         return redirect("/add_order_page")
     session["phone"]=request.form['phone']
     session["date"]=request.form['order-time']

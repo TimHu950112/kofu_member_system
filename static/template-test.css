@@ -61,3 +61,8 @@ input {
     color:gray;
     font-size:17px;
 }
+
+.price{
+    max-width: 50px;
+    
+}

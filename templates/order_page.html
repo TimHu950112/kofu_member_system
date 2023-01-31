@@ -20,14 +20,47 @@
                     <h4 class="m-2" style="color:black;" class="text-center">訂單查詢頁面<br><br>{{nickname}}您好</h4>
                 </div>
                 <!-- <div class="d-flex justify-content-center" style="margin-top: -40px;"> -->
+                    <div class="row mb-2 ms-1">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th colspan="2">購物車內容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{original}}</td>
+                                    <td>{{original_number}}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{scallops}}</td>
+                                    <td>{{scallops_number}}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{scallops_abalone}}</td>
+                                    <td>{{scallops_abalone_number}}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{Alkali}}</td>
+                                    <td>{{Alkali_number}}</td>
+                                </tr>
+                                <tr style="color: rgb(255, 0, 0);">
+                                    <td><b>{{cost}}</b></td>
+                                    <td><b>{{cost_number}}</b></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                    </div>
                     <form action="/check_order" method="POST" class="d-flex justify-content-center row mt-1">
-                        <input type="text" id="style2" name="phone"  placeholder="請輸入訂購電話或訂單編號" class="mb-4 col-10">
+                        <input type="text" id="style2" name="phone"  placeholder="請輸入訂購電話或訂單編號" class="mb-4 col-10 mt-2">
                         <input type="submit" value="送出" class="submit2" onclick="location.href='/check_old'">  
                     </form>
                 <!-- </div> -->
-                <div class="d-flex mt-5 justify-content-center">
-                    <a class="h6" onclick="location.href='/function'">搜尋頁面</a>
-                    <a class="h6 ms-4" onclick="location.href='/logout'">登出</a>
+                <div class="d-flex mt-5 justify-content-center px-5 mb-3">
+                    <a class="h6 flex" onclick="location.href='/add_order_page'">訂單頁面</a>
+                    <a class="h6 flex mx-auto" onclick="location.href='/function'">會員系統</a>
+                    <a class="h6 flex" onclick="location.href='/logout'">點擊登出</a>
                 </div>
             </div>
         </div>
