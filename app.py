@@ -405,7 +405,6 @@ def finish_order():
     "干貝粽":session["item_number_dict"]["2"],
     "干貝鮑魚粽":session["item_number_dict"]["3"],
     "鹼粽":session["item_number_dict"]["4"],
-    "number":session["order-number"],
     "date":{"year":session["date"][0],"month":session["date"][1],"day":session["date"][2],"time":session["date"][3]}
     })
     del session["item_number_dict"]
