@@ -21,6 +21,15 @@ body{
     box-shadow: 0 0px 70px rgba(0, 0, 0, 0.1);
 }
 
+.middle-board3{
+    max-width: 500px;
+    min-height: 600px;
+    border-radius: 0.5rem;
+    background-color: white;
+    border-top: 15px solid #0bc2f4;
+    box-shadow: 0 0px 70px rgba(0, 0, 0, 0.1);
+}
+
 input {
     border-style:solid;
     height:50px;

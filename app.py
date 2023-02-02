@@ -5,9 +5,10 @@ from unittest import result
 import pymongo
 import certifi
 from requests import Session
-import random
-import string
-import time
+
+#導入物件設定
+from data import*
+
 #初始化資料庫連線
 client=pymongo.MongoClient("mongodb+srv://root:root123@cluster0.rpebx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",tlsCAFile=certifi.where())
 db=client.kofu_member_system
@@ -21,402 +22,211 @@ app=Flask(
 )
 app.secret_key="any string"
 
+#index_page
 @app.route("/")
 def index():
-    session["status"]=None
+    session.clear()
+    print(session)
     return render_template("login.html")
 
-
-@app.route("/member",methods=["GET","POST"])
-def member():
-    if "nickname" in session:
-        nickname=session["nickname"]
-        email=session["email"]
-        password=session["password"]
-        return render_template("member.html",nickname=nickname,email=email,password=password)
-    flash("請先登入")
-    return render_template("login.html")
-
-@app.route("/function")
-def function():
-    if "nickname" in session:
-        return render_template("function.html")
-    flash("請先登入")
-    return render_template("login.html")
-
-@app.route("/add_page")
-def add_page():
-    if "nickname" in session:
-        nickname=session["nickname"]
-        return render_template("check_old.html",nickname=nickname)
-    flash("請先登入")
-    return render_template("login.html")
-
-# @app.route("/add",methods=["GET","POST"])
-# def add():
-#     session["member_name"]=request.form["member_name"]
-#     session["phone"]=request.form["phone"]
-#     if request.form.get("forever")=="forever":
-#         session["forever"]="forever"
-#     else:
-#         session["forever"]="not"
-
-#     collection=db.user
-#     collection.insert_one({
-#     "member_name":session["member_name"],
-#     "phone":session["phone"],
-#     "forever":session["forever"]})
-#     return redirect("/add_page")
-
-@app.route("/add",methods=["GET","POST"])
-def add():
-    session["member_name"]=request.form["member_name"]
-    session["phone"]=request.form["phone"]
-    if request.form.get("forever")=="forever":
-        session["forever"]="forever"
-    else:
-        session["forever"]="not"
-
-    collection=db.new
-    collection.insert_one({
-    "member_name":session["member_name"],
-    "phone":session["phone"],
-    "forever":session["forever"]})
-    flash("會員註冊成功")
-    return render_template("check_old.html")
-
-@app.route("/check_old",methods=["GET","POST"])
-def check_old():
-    session["phone"]=request.form["phone"]
-    
-    collection=db.user
-    result=collection.find_one({
-        "phone":session["phone"]
-    })
-
-    collection=db.new
-    result_one=collection.find_one({
-        "phone":session["phone"]
-    })
-
-    if result_one==None:
-        if result==None:
-            print("none")
-            return render_template("add_new.html",phone=session["phone"],member_name="會員名稱")
-        else:
-            session["member_name"]=result["member_name"]
-            flash("舊會員"+result["member_name"]+"請確認是否註冊為永久會員")
-            return render_template("add_new.html",phone=session["phone"],member_name=session["member_name"])
-    else:
-        flash("已是新會員")
-        return render_template("check_old.html")
-
-
-@app.route("/search",methods=["GET","POST"])
-def search():
-    session["phone"]=request.form["phone"]
-    collection=db.new
-    result=collection.find_one({"phone":session["phone"]})
-
-    collection=db.user
-    result_1=collection.find_one({"phone":session["phone"]})
-    
-    if result_1 !=None:
-        return render_template("function.html",status=result_1["member_name"])
-    if result !=None:
-            return render_template("function.html",status=result["member_name"])
-    else:
-        flash("查無資料")
-        return render_template("function.html",status="無資料")
-
-
-
-
+#error_page
 @app.route("/error")
 def error():
     message=request.args.get("msg","發生錯誤，請聯繫客服")
     return render_template("error.html",message=message)
 
+#add_member_page
+@app.route("/add_page")
+def add_page():
+    if "member_data" in session:
+        nickname=session["member_data"]["nickname"]
+        return render_template("check_old.html",nickname=nickname)
+    flash("請先登入")
+    return render_template("login.html")
 
-@app.route("/signup_page")
-def signup_page():
-    session["status"]=None
-    return render_template("signup.html")
+#function_page
+@app.route("/function")
+def function():
+    if "member_data" in session:
+        return render_template("function.html")
+    flash("請先登入")
+    return render_template("login.html")
 
-
-@app.route("/signup",methods=["GET","POST"])
-def signup():
-    nickname=request.form["nickname"]
-    email=request.form["email"]
-    password=request.form["password"]
-    session["email"]=email
-    session["nickname"]=nickname
-    session["password"]=password
-    collection=db.members
-    if  not(email and password and nickname):
-        return redirect("/error?msg=資料不能為空")
-    result=collection.find_one({"email":email})
-    if result != None:
-        return redirect("/error?msg=信箱已經被註冊")
-    return redirect("/check")
-
-@app.route("/check",methods=["GET","POST"])
-def check():
-    key = ''.join(random.choice(string.ascii_letters + string.digits) for x in range(6))
-    session["key"]=key
-    print(key)  
-    if session["status"]=="forget":
-        emails=session["email"]=request.form["emails"]
-        session["status"]="forget_twice"
-    if session["status"]=="forget_twice":
-        emails=session["email"]
-    else:
-        emails="tim20060112@gmail.com"
-        nickname=session["nickname"]
-    import email.message
-    msg=email.message.EmailMessage()
-    msg["From"]="eemailcheck9@gmail.com"
-    if session["status"]=="forget_twice":
-        msg["To"]=session["email"]
-    else:
-        msg["To"]=emails
-    msg["Subject"]="Email驗證"
-
-    msg.add_alternative("<h3>會員系統驗證碼</h3>您的驗證碼為:"+key+" （請勿向他人傳送此驗證碼，驗證碼限時5分鐘）",subtype="html") #HTML信件內容
-
-    acc="eemailcheck9@gmail.com"
-    password="qlqflzkffpsypkml"
-
-    #連線到SMTP Server
-    import smtplib
-
-    server=smtplib.SMTP_SSL("smtp.gmail.com",465) #建立gmail連驗
-    server.login(acc,password)
-    server.send_message(msg)
-    server.close() #發送完成後關閉連線
-    time_1 = time.time()#紀錄當前時間
-    session["time_1"]=time_1
-    print(time_1)
-    print("驗證碼發送成功")
-    if session["status"]=="forget_twice":
-        return render_template("check.html",emails=emails)
-    else:
-        return render_template("check.html",nickname=nickname,emails="後台信箱")
-    
-
-
-@app.route("/check_code",methods=["GET","POST"])
-def check_code():
-    print(type(request.form["key"]))
-    print(request.form["key"])
-    print(type(session["key"]))
-    print(session["key"])
-    time_2 = time.time()#紀錄當前時間
-    time_interval = time_2 - session["time_1"] #計算時間差
-    print(time_interval)
-    if  time_interval<300:
-        if request.form["key"]== session["key"]:
-            if session["status"]=="forget_twice":
-                session["status"]="forget_change"
-                return render_template("forget_change.html")
-            else:
-                collection=db.members
-                collection.insert_one({
-                "nickname":session["nickname"],
-                "email":session["email"],
-                "password":session["password"]})
-                return redirect("/")
-        else:
-            return redirect("/error?msg=驗證碼錯誤")
-    else:
-        print("驗證碼失效")
-        return redirect("/check")
-
-
-
-
-@app.route("/login",methods=["GET","POST"])
-def login():
-    email=request.form["email"]
-    password=request.form["password"]
-    collection=db.members
-    result=collection.find_one({
-        "$and":[
-            {"email":email},
-            {"password":password}
-        ]
-    })
-    if result==None:
-        return redirect("/error?msg=帳號或密碼錯誤")
-    session["nickname"]=result["nickname"]
-    session["email"]=result["email"]
-    session["password"]=result["password"]
-    return redirect("/function")
-
-@app.route("/logout")
-def logout():
-    del session["nickname"]
-    flash("登出成功")
-    return redirect("/")
-
-@app.route("/change",methods=["GET","POST"])
-def change():
-    password=request.form["password"]
-    collection=db.members
-    if session["status"]=="forget_change":
-        result=collection.update_one({
-        "email":session["email"]},
-        {"$set":{
-            "password":password
-        }
-    })
-    else:
-        nickname=request.form["nickname"]
-        previous_email=session["email"]
-        email=request.form["email"]
-        result=collection.find_one({"email":email})
-        if email!=previous_email:
-            if result != None:
-                return redirect("/error?msg=信箱已經被註冊")
-        result=collection.update_one({
-            "email":previous_email},
-            {"$set":{
-                "email":email,
-                "nickname":nickname,
-                "password":password
-            }
-        })
-        print("符合篩選條件數:",result.matched_count)
-        print("實際更新資料數:",result.modified_count)
-    return redirect("/")
-     
-@app.route("/forget_page")
-def forget_page():
-    session["status"]="forget"
-    return render_template("forget.html")
-
-
+#search_order_page
 @app.route("/order_page")
 def order_page():
-    if "nickname" in session:
-        nickname=session["nickname"]
+    if "member_data" in session:
+        nickname=session["member_data"]["nickname"]
         return render_template("order_page.html",nickname=nickname)
     flash("請先登入")
     return redirect("/")
 
+#add_order_page
 @app.route("/add_order_page")
 def add_order_page():
-    if "nickname" in session:
-        nickname=session["nickname"]
-        try:
-            del session["item_number_dict"]
-            print("delete_last_item")
-        except:
-            print("no item")
-        session["item_price_dict"]={"1":80,"2":80,"3":80,"4":80}
-        session["item_number_dict"]={"1":0,"2":0,"3":0,"4":0}
-        original_price=session["item_price_dict"]["1"]
-        scallops_price=session["item_price_dict"]["2"]
-        scallops_abalone_price=session["item_price_dict"]["3"]
-        Alkali_price=session["item_price_dict"]["4"]
-        return render_template("add_order_page.html",nickname=nickname,original_price=original_price,scallops_price=scallops_price,scallops_abalone_price=scallops_abalone_price,Alkali_price=Alkali_price)
-    flash("請先登入")
+    session["edit"]="none"
+    session["price"]=[["原味肉粽（無蛋）",80,"o_n_price"],["原味肉粽（有蛋）",80,"o_price"],["干貝粽",80,"sc_price"],["干貝鮑魚粽",80,"sc_a_price"],["鹼粽",80,"a_price"],["紅豆鹼粽",80,"b_a_price"],["南部粽",80,"so_price"]]
+    session["items"]=[["原味肉粽（無蛋）",0,"o_n_item"],["原味肉粽（有蛋）",0,"o_item"],["干貝粽",0,"sc_item"],["干貝鮑魚粽",0,"sc_a_item"],["鹼粽",0,"a_item"],["紅豆鹼粽",0,"b_a_item"],["南部粽",0,"so_item"]]
+    return render_template("add_order_page.html",price=session["price"],items=session["items"],cost=0)
+
+#login_function
+@app.route("/login",methods=["GET","POST"])
+def login():
+    session["member_data"]={"email":request.form["email"],"password":request.form["password"]}
+    session["member_data"]["nickname"]=User.login(session["member_data"]["email"],session["member_data"]["password"])
+    if session["member_data"]["nickname"]== False:
+        return redirect("/error?msg=帳號或密碼錯誤")
+    return render_template("function.html")
+
+#logout_funtion
+@app.route("/logout")
+def logout():
+    session.clear()
+    flash("登出成功")
     return redirect("/")
 
+#check_add_member_function
+#To check if he is old member or already a new member
+@app.route("/check_old",methods=["GET","POST"])
+def check_old():
+    session["phone"]=request.form["phone"]
+    member_status=Member.check("add",session["phone"])
+    print(member_status)
+    if member_status==True:
+        flash("已經是新會員")
+        return render_template("check_old.html")
+    if member_status==None:
+        return render_template("add_new.html",phone=session["phone"],member_name="請輸入名稱")
+    flash("舊會員"+member_status+"請確認是否註冊為永久會員")
+    return render_template("add_new.html",phone=session["phone"],member_name=member_status)
+
+#add_member_function
+#To add member to mongodb 
+@app.route("/add",methods=["GET","POST"])
+def add():
+    if request.form.get("forever")=="forever":
+        forever="forever"
+    else:
+        forever="not"
+    Member.add(request.form["phone"],request.form["member_name"],forever)
+    flash("會員註冊成功")
+    return render_template("check_old.html")
+
+    
+#search_member_function
+@app.route("/search",methods=["GET","POST"])
+def search():
+    status=Member.check("search",request.form["phone"])
+    if status==False:
+        flash("查無資料")
+        return render_template("function.html",status="無資料")
+    return render_template("function.html",status=status)
+
+#search_order_function
+@app.route("/search_order",methods=["GET","POST"])
+def search_order():
+    collection=db.order
+    if request.form['item'] =="請選取搜尋方式":
+        flash("請選擇搜尋方式")
+        return redirect("/order_page")
+    if request.form['item']=="order-number":
+        result=list(collection.find({"order-number":request.form['phone']}))
+    if request.form['item']=="phone":
+        result=list(collection.find({"phone":request.form['phone']}))
+    if request.form['item']=="date":
+        date=request.form['phone'].split("-")
+        result=list(collection.find({
+            "$and":[
+                {"year":date[0]},
+                {"month":date[1]},
+                {"day":date[2]}
+            ]
+        }))
+    if request.form['item']=="number":
+        order_object=[]
+        result=list(collection.find())
+        
+    order_object=[]
+    for i in range(len(result)):
+        order_object.append(Order(result[i]["phone"],result[i]["order-number"],{"原味肉粽(無蛋)":result[i]["原味肉粽(無蛋)"],"原味肉粽(有蛋)":result[i]["原味肉粽(有蛋)"],"干貝粽":result[i]["干貝粽"],"干貝鮑魚粽":result[i]["干貝鮑魚粽"],"鹼粽":result[i]["鹼粽"],"紅豆鹼粽":result[i]["紅豆鹼粽"],"南部粽":result[i]["南部粽"]},result[i]["year"]+"-"+result[i]["month"]+"-"+result[i]["day"]+" "+result[i]["time"],result[i]["status"]))
+        number_list=[0,0,0,0,0,0,0]
+    for i in range(len(order_object)):
+        number_list[0]+=int(order_object[i].items['原味肉粽(無蛋)'])
+        number_list[1]+=int(order_object[i].items['原味肉粽(有蛋)'])
+        number_list[2]+=int(order_object[i].items['干貝粽'])
+        number_list[3]+=int(order_object[0].items['干貝鮑魚粽'])
+        number_list[4]+=int(order_object[0].items['鹼粽'])
+        number_list[5]+=int(order_object[0].items['紅豆鹼粽'])
+        number_list[6]+=int(order_object[0].items['南部粽'])
+    try:
+        print(number_list)
+    except:
+        number_list=[0,0,0,0,0,0,0]
+    return render_template("order_result_page.html",order_list=order_object,nickname=session["member_data"]["nickname"],number_list=number_list)
+
+
+#each_order_function
+@app.route("/order")
+def order():
+    session["edit"]="edit"
+    phone=request.args.get("phone")
+    result=Order.search(phone)
+    print(Order.search(phone))
+    session["items"]=[["原味肉粽（無蛋）",result["原味肉粽(無蛋)"],"o_n_item"],["原味肉粽（有蛋）",result["原味肉粽(有蛋)"],"o_item"],["干貝粽",result["干貝粽"],"sc_item"],["干貝鮑魚粽",result["干貝鮑魚粽"],"sc_a_item"],["鹼粽",result["鹼粽"],"a_item"],["紅豆鹼粽",result["紅豆鹼粽"],"b_a_item"],["南部粽",result["南部粽"],"so_item"]]
+    print(session["items"])
+    return render_template("each_order_page.html",items=session["items"],phone=result["phone"],order_number=result["order-number"],order_time=result["year"]+"-"+result["month"]+"-"+result["day"]+"T"+result["time"])
+
+#check_order
+@app.route("/check_order")
+def check_order():
+    phone=request.args.get("phone")
+    Order.check(phone)
+    flash("取貨成功")
+    return render_template("order_page.html")
+
+#delete_order
+@app.route("/delete_order")
+def delete_order():
+    phone=request.args.get("phone")
+    Order.delete(phone)
+    flash("刪除成功")
+    return render_template("order_page.html")
+
+#edit_price_function
 @app.route("/edit_price", methods=["GET","POST"])
 def edit_price():
-    if "nickname" in session:
-        session["item_price_dict"]={"1":int(request.form['original_price']),"2":int(request.form['scallops_price']),"3":int(request.form['scallops_abalone_price']),"4":int(request.form['Alkali_price'])}
-        original_price=session["item_price_dict"]["1"]
-        scallops_price=session["item_price_dict"]["2"]
-        scallops_abalone_price=session["item_price_dict"]["3"]
-        Alkali_price=session["item_price_dict"]["4"]
-        return render_template("add_order_page.html",original_price=original_price,scallops_price=scallops_price,scallops_abalone_price=scallops_abalone_price,Alkali_price=Alkali_price)
-    flash("請先登入")
-    return redirect("/")
-
-@app.route("/add_order_item" ,methods=["GET","POST"])
-def add_order_item():
-    # if not session["item_number_dict"]:
-    #     session["item_number_dict"]={"1":0,"2":0,"3":0,"4":0}
-    #     print(session["item_number_dict"])
-    if not request.form['number']:
-        flash("請輸入數量")
-        return redirect("/add_order_page")
-    nickname=session["nickname"]
-    session["item"]=request.form['item']
-    session["number"]= int(request.form['number'])
-    session["item_number_dict"][session["item"]]= int(session["item_number_dict"][session["item"]])+session["number"]
-
-    original="原味肉粽$"+str(session["item_price_dict"]["1"])+"元"
-    original_number= session["item_number_dict"]["1"]
-
-    if session["item_number_dict"]["1"]==0:
-        print("delete1")
-        original=""
-        original_number= ""
-
-    scallops="干貝粽$"+str(session["item_price_dict"]["2"])+"元"
-    scallops_number=session["item_number_dict"]["2"]
-    if session["item_number_dict"]["2"]==0:
-        scallops=""
-        scallops_number=""
-
-    scallops_abalone="干貝鮑魚粽$"+str(session["item_price_dict"]["3"])+"元"
-    scallops_abalone_number=session["item_number_dict"]["3"]
-    if session["item_number_dict"]["3"]==0:
-        scallops_abalone=""
-        scallops_abalone_number=""
-
-    Alkali="鹼粽$"+str(session["item_price_dict"]["4"])+"元"
-    Alkali_number=session["item_number_dict"]["4"]
-    if session["item_number_dict"]["4"]==0:
-        Alkali=""
-        Alkali_number=""
-    print(session["item_price_dict"]["1"])
-    print(session["item_price_dict"]["2"])
-    print(session["item_price_dict"]["3"])
-    print(session["item_price_dict"]["4"])
-    cost_number=session["item_number_dict"]["1"]*session["item_price_dict"]["1"]+session["item_number_dict"]["2"]*session["item_price_dict"]["2"]+session["item_number_dict"]["3"]*session["item_price_dict"]["3"]+session["item_number_dict"]["4"]*session["item_price_dict"]["4"]
-    cost="總金額："
-    if cost_number==0:
-        cost=""
-        cost_number=""
-    print("更改後",session["item_number_dict"])
-    return render_template("add_order_page.html",original=original,original_number=original_number,scallops=scallops,scallops_number=scallops_number,scallops_abalone=scallops_abalone,scallops_abalone_number=scallops_abalone_number,Alkali=Alkali,Alkali_number=Alkali_number,nickname=nickname,cost=cost,cost_number=cost_number,original_price=session["item_price_dict"]["1"],scallops_price=session["item_price_dict"]["2"],scallops_abalone_price=session["item_price_dict"]["3"],Alkali_price=session["item_price_dict"]["4"])
-
-@app.route("/finish_order",methods=["GET","POST"])
+    session["price"]=[["原味肉粽（無蛋）",int(request.form["o_n_price"]),"o_n_price"],["原味肉粽（有蛋）",int(request.form["o_price"]),"o_price"],["干貝粽",int(request.form["sc_price"]),"sc_price"],["干貝鮑魚粽",int(request.form["sc_a_price"]),"sc_a_price"],["鹼粽",int(request.form["a_price"]),"a_price"],["紅豆鹼粽",int(request.form["b_a_price"]),"b_a_price"],["南部粽",int(request.form["so_price"]),"so_price"]]
+    return render_template("add_order_page.html",price=session["price"],items=session["items"],cost=0)
+#finish_order_function
+@app.route("/finish_order", methods=["GET","POST"])
 def finish_order():
-    if not request.form['order-time']:
-        flash("請輸入日期")
-        return redirect("/add_order_page")
-    if not request.form['phone']:
-        flash("請輸入電話")
-        return redirect("/add_order_page")
-    session["phone"]=request.form['phone']
-    session["date"]=request.form['order-time']
-    session["date"]=session["date"].replace("T","-").split("-")
-    session["order-number"]=request.form['order-number']
-    collection=db.order
-    collection.insert_one({
-    "phone":session["phone"],
-    "order-number":session["order-number"],
-    "原味肉粽":session["item_number_dict"]["1"],
-    "干貝粽":session["item_number_dict"]["2"],
-    "干貝鮑魚粽":session["item_number_dict"]["3"],
-    "鹼粽":session["item_number_dict"]["4"],
-    "date":{"year":session["date"][0],"month":session["date"][1],"day":session["date"][2],"time":session["date"][3]}
-    })
-    del session["item_number_dict"]
-    session["item_number_dict"]={"1":0,"2":0,"3":0,"4":0}
+    if not request.form["phone"]:
+        flash("請輸入電話號碼")
+        return render_template("add_order_page.html",price=session["price"],items=session["items"])
+    if not request.form["order-number"]:
+        flash("請輸入電話號碼")
+        return render_template("add_order_page.html",price=session["price"],items=session["items"])
+    if session["edit"]=="edit":
+        session["items"]=[["原味肉粽（無蛋）",int(request.form["o_n_item"]),"o_n_item"],["原味肉粽（有蛋）",int(request.form["o_item"]),"o_item"],["干貝粽",int(request.form["sc_item"]),"sc_item"],["干貝鮑魚粽",int(request.form["sc_a_item"]),"sc_a_item"],["鹼粽",int(request.form["a_item"]),"a_item"],["紅豆鹼粽",int(request.form["b_a_item"]),"b_a_item"],["南部粽",int(request.form["so_item"]),"so_item"]]
+        Order.change(request.form["phone"],request.form["order-number"],session["items"],request.form['order-time'].replace("T","-").split("-"))
+        session["edit"]="none"
+        flash("編輯成功")
+        return render_template("order_page.html") 
+    if Order.search(request.form["phone"])!=None:
+        flash("該電話已被使用，請至編輯頁面添加訂單")
+        return redirect("/order?phone="+request.form["phone"])
+    print(session["items"])
+    Order.order(request.form["phone"],request.form["order-number"],session["items"],request.form['order-time'].replace("T","-").split("-"))
     flash("訂購成功")
-    return render_template("add_order_page.html")
+    return redirect("/add_order_page")
 
+@app.route("/cost", methods=["GET","POST"])
+def cost():
+    session["items"]=[["原味肉粽（無蛋）",int(request.form["o_n_item"]),"o_n_item"],["原味肉粽（有蛋）",int(request.form["o_item"]),"o_item"],["干貝粽",int(request.form["sc_item"]),"sc_item"],["干貝鮑魚粽",int(request.form["sc_a_item"]),"sc_a_item"],["鹼粽",int(request.form["a_item"]),"a_item"],["紅豆鹼粽",int(request.form["b_a_item"]),"b_a_item"],["南部粽",int(request.form["so_item"]),"so_item"]]
+    cost=0
+    for i in range(len(session["items"])):
+        cost+=session["items"][i][1]*session["price"][i][1]
+    print("cost",cost)
+    return render_template("add_order_page.html",price=session["price"],items=session["items"],cost=cost)
 if __name__=='__main__':
     app.run(port=5000,debug=True)
-
-
-
-
-
-

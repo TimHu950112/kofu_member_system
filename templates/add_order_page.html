@@ -30,56 +30,34 @@
                                     data-bs-target="#exampleModal" style="max-width: 90px;">編輯價格</button></th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>{{original}}</td>
-                            <td>{{original_number}}</td>
-                        </tr>
-                        <tr>
-                            <td>{{scallops}}</td>
-                            <td>{{scallops_number}}</td>
-                        </tr>
-                        <tr>
-                            <td>{{scallops_abalone}}</td>
-                            <td>{{scallops_abalone_number}}</td>
-                        </tr>
-                        <tr>
-                            <td>{{Alkali}}</td>
-                            <td>{{Alkali_number}}</td>
-                        </tr>
-                        <tr style="color: rgb(255, 0, 0);">
-                            <td><b>{{cost}}</b></td>
-                            <td><b>{{cost_number}}</b></td>
-                        </tr>
-                    </tbody>
+                    <form action="/cost" method="POST">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">品項</th>
+                                    <th scope="col">數量</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {%for i in items%}
+                                <tr>
+                                    <td>{{i[0]}}</td>
+                                    <td><input type="text" style="width: 50px; height:35px;" name="{{i[2]}}"
+                                            class="me-1" value="{{i[1]}}">顆</td>
+                                </tr>
+                                {%endfor%}
+                                <tr>
+                                    <td><button class="btn btn-success">小計</button></td>
+                                    <td style="font-weight:700; font-size: larger;color:red;">{{cost}}元</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
                 </table>
-
             </div>
-
-            <div class="">
-                <form action="/add_order_item" method="POST"
-                    class="d-flex justify-content-center align-items-center row mb-2">
-                    <b class="mb-1">訂購品項</b>
-                    <div class="col">
-                        <select class="form-select" aria-label="item" style="height: 50px" name="item">
-                            <option selected>請選取品項</option>
-                            <option value="1">原味肉粽</option>
-                            <option value="2">干貝粽</option>
-                            <option value="3">干貝鮑魚粽</option>
-                            <option value="4">鹼粽</option>
-                        </select>
-                    </div>
-                    <div class="col">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="數量" aria-label="number"
-                                aria-describedby="button-addon2" style="height: 50px" name="number">
-                            <input type="submit" value="加入" class="btn btn-outline-secondary">
-                            <!-- <button class="btn btn-outline-secondary" type="button" id="button-addon2" style="height: 50px">加入</button> -->
-                        </div>
-                    </div>
-                </form>
-                <form action="/finish_order" method="POST">
-                    <b class="mt-2 mb-1">訂購電話<span style="color:red" class="ms-2">請確認電話是否正確</span></b>
+            <form action="/finish_order" method="POST">
+                <div class="">
+                    <b class="mt-2 mb-1">訂購電話<span style="color:red; font-size:13px !important;font-weight:500;" class="ms-2">*請確認電話是否正確*</span></b>
                     <div class="col mb-2">
                         <input type="text" id="phone" name="phone" placeholder="請輸入電話號碼">
                     </div>
@@ -94,16 +72,16 @@
                     <div class="row justify-content-center">
                         <input type="submit" value="送出訂單" class="submit2 mt-5">
                     </div>
-                </form>
+            </form>
 
-            </div>
-            <!-- </div> -->
-            <div class="d-flex mt-5 justify-content-center px-5 mb-3">
-                <a class="h6 flex" onclick="location.href='/order_page'">搜尋頁面</a>
-                <a class="h6 flex mx-auto" onclick="location.href='/function'">會員系統</a>
-                <a class="h6 flex" onclick="location.href='/logout'">點擊登出</a>
-            </div>
         </div>
+        <!-- </div> -->
+        <div class="d-flex mt-5 justify-content-center px-5 mb-3">
+            <a class="h6 flex" onclick="location.href='/order_page'">搜尋頁面</a>
+            <a class="h6 flex mx-auto" onclick="location.href='/function'">會員系統</a>
+            <a class="h6 flex" onclick="location.href='/logout'">點擊登出</a>
+        </div>
+    </div>
     </div>
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -116,43 +94,29 @@
                     <form action="/edit_price" method="POST">
                         <table class="table">
                             <thead>
-                              <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">品項</th>
-                                <th scope="col">價格</th>
-                              </tr>
+                                <tr>
+                                    <th scope="col">品項</th>
+                                    <th scope="col">價格</th>
+                                </tr>
                             </thead>
                             <tbody>
-                              <tr>
-                                <th scope="row">1</th>
-                                <td>原味肉粽</td>
-                                <td><input type="text" style="width: 50px; height:35px;" name="original_price" class="me-1" value="{{original_price}}">元</td>
-                              </tr>
-                              <tr>
-                                <th scope="row">2</th>
-                                <td>干貝肉粽</td>
-                                <td><input type="text" style="width: 50px; height:35px;" name="scallops_price" class="me-1" value="{{scallops_price}}">元</td>
-                              </tr>
-                              <tr>
-                                <th scope="row">3</th>
-                                <td>干貝鮑魚粽</td>
-                                <td><input type="text" style="width: 50px; height:35px;" name="scallops_abalone_price" class="me-1" value="{{scallops_abalone_price}}">元</td>
-                              </tr>
-                              <tr>
-                                <th scope="row">4</th>
-                                <td>鹼粽</td>
-                                <td><input type="text" style="width: 50px; height:35px;" name="Alkali_price" class="me-1" value="{{Alkali_price}}">元</td>
-                              </tr>
+                                {%for i in price%}
+                                <tr>
+                                    <td>{{i[0]}}</td>
+                                    <td><input type="text" style="width: 50px; height:35px;" name="{{i[2]}}"
+                                            class="me-1" value="{{i[1]}}">元</td>
+                                </tr>
+                                {%endfor%}
                             </tbody>
-                          </table>
+                        </table>
 
-                    
+
                 </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                            <button type="submit" class="btn btn-success" data-bs-dismiss="modal">確認更改</button>
-                        </div>
-                    </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="submit" class="btn btn-success" data-bs-dismiss="modal">確認更改</button>
+                </div>
+                </form>
             </div>
         </div>
     </div>
