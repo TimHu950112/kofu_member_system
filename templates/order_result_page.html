@@ -98,11 +98,11 @@
                     </thead>
                     <tbody>
                         {%for order in order_list%}
-                        <tr onclick="location.href='/order?phone={{order.phone}}';">
+                        <tr onclick="location.href='/order?phone={{order.number}}';">
                             <th scope="row">{{order.number}}</th>
                             <td>{{order.phone}}</td>
                             <td>{{order.date}}</td>
-                            {%if order.status=="not"%}
+                            {%if order.status=="0"%}
                             <td style="color:red; font-weight:800">未取貨</td>
                             {%else%}
                             <td style="color: green;font-weight:800">取貨成功</td>

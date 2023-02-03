@@ -67,7 +67,11 @@ def add_order_page():
     session["edit"]="none"
     session["price"]=[["原味肉粽（無蛋）",80,"o_n_price"],["原味肉粽（有蛋）",80,"o_price"],["干貝粽",80,"sc_price"],["干貝鮑魚粽",80,"sc_a_price"],["鹼粽",80,"a_price"],["紅豆鹼粽",80,"b_a_price"],["南部粽",80,"so_price"]]
     session["items"]=[["原味肉粽（無蛋）",0,"o_n_item"],["原味肉粽（有蛋）",0,"o_item"],["干貝粽",0,"sc_item"],["干貝鮑魚粽",0,"sc_a_item"],["鹼粽",0,"a_item"],["紅豆鹼粽",0,"b_a_item"],["南部粽",0,"so_item"]]
-    return render_template("add_order_page.html",price=session["price"],items=session["items"],cost=0)
+    collection=db.order
+    result1=list(collection.find({},{"order-number":1}).sort("order-number",-1))
+    session["order-number"]=str(int(result1[0]["order-number"])+1)
+    return render_template("add_order_page.html",price=session["price"],items=session["items"],cost=0,order_number=session["order-number"])
+
 
 #login_function
 @app.route("/login",methods=["GET","POST"])
@@ -132,7 +136,7 @@ def search_order():
     if request.form['item']=="order-number":
         result=list(collection.find({"order-number":request.form['phone']}))
     if request.form['item']=="phone":
-        result=list(collection.find({"phone":request.form['phone']}))
+        result=list(collection.find({"phone":request.form['phone']}).sort([("status",1),("year",1),["month",1],["day",1]]))
     if request.form['item']=="date":
         date=request.form['phone'].split("-")
         result=list(collection.find({
@@ -141,10 +145,10 @@ def search_order():
                 {"month":date[1]},
                 {"day":date[2]}
             ]
-        }))
+        }).sort([("status",1)]))
     if request.form['item']=="number":
         order_object=[]
-        result=list(collection.find())
+        result=list(collection.find().sort([("status",1),("year",1),["month",1],["day",1]]))
         
     order_object=[]
     for i in range(len(result)):
@@ -172,12 +176,11 @@ def order():
         flash("請先登入")
         return redirect("/")
     session["edit"]="edit"
-    phone=request.args.get("phone")
+    phone=request.args.get("phone")#change into order-number
     result=Order.search(phone)
-    print(Order.search(phone))
     session["items"]=[["原味肉粽（無蛋）",result["原味肉粽(無蛋)"],"o_n_item"],["原味肉粽（有蛋）",result["原味肉粽(有蛋)"],"o_item"],["干貝粽",result["干貝粽"],"sc_item"],["干貝鮑魚粽",result["干貝鮑魚粽"],"sc_a_item"],["鹼粽",result["鹼粽"],"a_item"],["紅豆鹼粽",result["紅豆鹼粽"],"b_a_item"],["南部粽",result["南部粽"],"so_item"]]
     print(session["items"])
-    return render_template("each_order_page.html",items=session["items"],phone=result["phone"],order_number=result["order-number"],order_time=result["year"]+"-"+result["month"]+"-"+result["day"]+"T"+result["time"])
+    return render_template("each_order_page.html",items=session["items"],phone=result["phone"],order_number=result["order-number"],order_time=result["year"]+"-"+result["month"]+"-"+result["day"]+"T"+result["time"],cost=result["cost"])
 
 #check_order
 @app.route("/check_order")
@@ -203,23 +206,23 @@ def edit_price():
 #finish_order_function
 @app.route("/finish_order", methods=["GET","POST"])
 def finish_order():
-    if not request.form["phone"]:
-        flash("請輸入電話號碼")
+    if not "cost" in session:
+        flash("尚未小計")
         return render_template("add_order_page.html",price=session["price"],items=session["items"])
-    if not request.form["order-number"]:
+    if not request.form["phone"]:
         flash("請輸入電話號碼")
         return render_template("add_order_page.html",price=session["price"],items=session["items"])
     if session["edit"]=="edit":
         session["items"]=[["原味肉粽（無蛋）",int(request.form["o_n_item"]),"o_n_item"],["原味肉粽（有蛋）",int(request.form["o_item"]),"o_item"],["干貝粽",int(request.form["sc_item"]),"sc_item"],["干貝鮑魚粽",int(request.form["sc_a_item"]),"sc_a_item"],["鹼粽",int(request.form["a_item"]),"a_item"],["紅豆鹼粽",int(request.form["b_a_item"]),"b_a_item"],["南部粽",int(request.form["so_item"]),"so_item"]]
-        Order.change(request.form["phone"],request.form["order-number"],session["items"],request.form['order-time'].replace("T","-").split("-"))
+        Order.change(request.form["phone"],session["order-number"],session["items"],request.form['order-time'].replace("T","-").split("-"),request.form["cost"])
         session["edit"]="none"
         flash("編輯成功")
         return render_template("order_page.html") 
-    if Order.search(request.form["phone"])!=None:
-        flash("該電話已被使用，請至編輯頁面添加訂單")
-        return redirect("/order?phone="+request.form["phone"])
+    if Order.search(session["order-number"])!=None:
+        flash("該訂單編號已被使用")
+        return redirect("/add_order_page")
     print(session["items"])
-    Order.order(request.form["phone"],request.form["order-number"],session["items"],request.form['order-time'].replace("T","-").split("-"))
+    Order.order(request.form["phone"],session["order-number"],session["items"],request.form['order-time'].replace("T","-").split("-"),session["cost"])
     flash("訂購成功")
     return redirect("/add_order_page")
 
@@ -230,6 +233,7 @@ def cost():
     for i in range(len(session["items"])):
         cost+=session["items"][i][1]*session["price"][i][1]
     print("cost",cost)
-    return render_template("add_order_page.html",price=session["price"],items=session["items"],cost=cost)
+    session["cost"]=cost
+    return render_template("add_order_page.html",price=session["price"],items=session["items"],cost=cost,order_number=session["order-number"])
 if __name__=='__main__':
     app.run(port=5000,debug=True)

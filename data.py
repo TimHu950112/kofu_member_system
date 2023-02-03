@@ -74,7 +74,7 @@ class Order:
         self.date=date
         self.status=status
 
-    def order(phone,order_number,items,date):
+    def order(phone,order_number,items,date,cost):
         print(items)
         collection=db.order
         collection.insert_one({
@@ -91,13 +91,14 @@ class Order:
         "month":date[1],
         "day":date[2],
         "time":date[3],
-        "status":"not"
+        "status":"0",
+        "cost":cost
         })
-    def search(phone):
+    def search(order_number):
         collection=db.order
-        result=collection.find_one({"phone":phone})
+        result=collection.find_one({"order-number":order_number})
         return result
-    def change(phone,order_number,items,date):
+    def change(phone,order_number,items,date,cost):
         collection=db.order
         collection.update_one({
         "phone":phone},
@@ -114,7 +115,8 @@ class Order:
         "month":date[1],
         "day":date[2],
         "time":date[3],
-        "status":"not"
+        "status":"0",
+        "cost":cost
         }
         })
     def check(phone):
@@ -122,7 +124,7 @@ class Order:
         collection.update_one({
         "phone":phone},
         {"$set":{
-        "status":"yes"
+        "status":"1"
         }
         })
     def delete(phone):

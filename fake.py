@@ -21,19 +21,20 @@ print("\n"+"資料庫連線成功".center(87,"*")+"\n")
 for i in range(10):
     collection=db.order
     collection.insert_one({
-    "phone":str(random.randrange(10)*10),
-    "order-number":"00"+str(random.randrange(10)),
-    "原味肉粽(無蛋)":str(random.randrange(10)),
-    "原味肉粽(有蛋)":str(random.randrange(10)),
-    "干貝粽":str(random.randrange(10)),
-    "干貝鮑魚粽":str(random.randrange(10)),
-    "鹼粽":str(random.randrange(10)),
-    "紅豆鹼粽":str(random.randrange(10)),
-    "南部粽":str(random.randrange(10)),
+    "phone":"測試資料",
+    "order-number":i,
+    "原味肉粽(無蛋)":random.randrange(10),
+    "原味肉粽(有蛋)":random.randrange(10),
+    "干貝粽":random.randrange(10),
+    "干貝鮑魚粽":random.randrange(10),
+    "鹼粽":random.randrange(10),
+    "紅豆鹼粽":random.randrange(10),
+    "南部粽":random.randrange(10),
     "year":"2022",
-    "month":"02",
-    "day":"02",
+    "month":str(random.randrange(12)),
+    "day":str(random.randrange(30)),
     "time":"20:15",
-    "status":"not"
+    "status":"0",
+    "cost":random.randrange(10)
     })
     print(i)

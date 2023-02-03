@@ -55,11 +55,15 @@
                 </div>
                 <b class="mt-2 mb-1">訂單編號</b>
                 <div class="col mb-2">
-                    <input type="text" id="order-number" name="order-number" value="{{order_number}}" placeholder="請輸入訂單編號">
+                    <input type="text" id="order-number" name="order-number" value="{{order_number}}" placeholder="請輸入訂單編號" disabled>
                 </div>
                 <b class="mt-2 mb-1">取貨時間</b>
                 <div class="col">
                     <input type="datetime-local" id="order-time" value={{order_time}} name="order-time">
+                </div>
+                <b class="mt-2 mb-1">應付金額</b>
+                <div class="col mb-2">
+                    <input type="text" id="cost" name="cost" value="{{cost}}" placeholder="請輸入應付金額">
                 </div>
                 <div class="row justify-content-center">
                     <input type="submit" value="確認編輯訂單" class="submit2 mt-5">
