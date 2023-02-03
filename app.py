@@ -154,10 +154,10 @@ def search_order():
         number_list[0]+=int(order_object[i].items['原味肉粽(無蛋)'])
         number_list[1]+=int(order_object[i].items['原味肉粽(有蛋)'])
         number_list[2]+=int(order_object[i].items['干貝粽'])
-        number_list[3]+=int(order_object[0].items['干貝鮑魚粽'])
-        number_list[4]+=int(order_object[0].items['鹼粽'])
-        number_list[5]+=int(order_object[0].items['紅豆鹼粽'])
-        number_list[6]+=int(order_object[0].items['南部粽'])
+        number_list[3]+=int(order_object[i].items['干貝鮑魚粽'])
+        number_list[4]+=int(order_object[i].items['鹼粽'])
+        number_list[5]+=int(order_object[i].items['紅豆鹼粽'])
+        number_list[6]+=int(order_object[i].items['南部粽'])
     try:
         print(number_list)
     except:
@@ -168,6 +168,9 @@ def search_order():
 #each_order_function
 @app.route("/order")
 def order():
+    if not "member_data" in session:
+        flash("請先登入")
+        return redirect("/")
     session["edit"]="edit"
     phone=request.args.get("phone")
     result=Order.search(phone)
