@@ -79,7 +79,7 @@ class Order:
         collection=db.order
         collection.insert_one({
         "phone":phone,
-        "order-number":order_number,
+        "order-number":int(order_number),
         "原味肉粽(無蛋)":items[0][1],
         "原味肉粽(有蛋)":items[1][1],
         "干貝粽":items[2][1],
@@ -96,12 +96,12 @@ class Order:
         })
     def search(order_number):
         collection=db.order
-        result=collection.find_one({"order-number":order_number})
+        result=collection.find_one({"order-number":int(order_number)})
         return result
     def change(phone,order_number,items,date,cost):
         collection=db.order
         collection.update_one({
-        "order-number":order_number},
+        "order-number":int(order_number)},
         {"$set":{
         "phone":phone,
         "原味肉粽(無蛋)":items[0][1],
@@ -122,7 +122,7 @@ class Order:
     def check(order_number):
         collection=db.order
         collection.update_one({
-        "order-number":order_number},
+        "order-number":int(order_number)},
         {"$set":{
         "status":"1"
         }
@@ -130,4 +130,4 @@ class Order:
     def delete(order_number):
         collection=db.order
         collection.delete_one({
-        "order-number":order_number})
+        "order-number":int(order_number)})
