@@ -101,9 +101,9 @@ class Order:
     def change(phone,order_number,items,date,cost):
         collection=db.order
         collection.update_one({
-        "phone":phone},
+        "order-number":order_number},
         {"$set":{
-        "order-number":order_number,
+        "phone":phone,
         "原味肉粽(無蛋)":items[0][1],
         "原味肉粽(有蛋)":items[1][1],
         "干貝粽":items[2][1],
