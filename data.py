@@ -119,15 +119,15 @@ class Order:
         "cost":cost
         }
         })
-    def check(phone):
+    def check(order_number):
         collection=db.order
         collection.update_one({
-        "phone":phone},
+        "order-number":order_number},
         {"$set":{
         "status":"1"
         }
         })
-    def delete(phone):
+    def delete(order_number):
         collection=db.order
         collection.delete_one({
-        "phone":phone})
+        "order-number":order_number})
