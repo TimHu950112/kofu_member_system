@@ -134,7 +134,7 @@ def search_order():
         flash("請選擇搜尋方式")
         return redirect("/order_page")
     if request.form['item']=="order-number":
-        result=list(collection.find({"order-number":request.form['phone']}))
+        result=list(collection.find({"order-number":int(request.form['phone'])}))
     if request.form['item']=="phone":
         result=list(collection.find({"phone":request.form['phone']}).sort([("status",1),("year",1),["month",1],["day",1]]))
     if request.form['item']=="date":
