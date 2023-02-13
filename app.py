@@ -133,6 +133,10 @@ def search_order():
     if request.form['item'] =="請選取搜尋方式":
         flash("請選擇搜尋方式")
         return redirect("/order_page")
+    if request.form['item']!="number":
+        if not request.form["phone"]:
+            flash("搜尋欄不能為空白")
+            return redirect("/order_page")
     if request.form['item']=="order-number":
         result=list(collection.find({"order-number":int(request.form['phone'])}))
     if request.form['item']=="phone":
