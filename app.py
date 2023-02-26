@@ -65,7 +65,7 @@ def order_page():
 @app.route("/add_order_page")
 def add_order_page():
     session["edit"]="none"
-    session["price"]=[["原味肉粽（無蛋）",80,"o_n_price"],["原味肉粽（有蛋）",80,"o_price"],["干貝粽",80,"sc_price"],["干貝鮑魚粽",80,"sc_a_price"],["鹼粽",80,"a_price"],["紅豆鹼粽",80,"b_a_price"],["南部粽",80,"so_price"]]
+    session["price"]=[["原味肉粽（無蛋）",85,"o_n_price"],["原味肉粽（有蛋）",95,"o_price"],["干貝粽",158,"sc_price"],["干貝鮑魚粽",188,"sc_a_price"],["鹼粽",40,"a_price"],["紅豆鹼粽",45,"b_a_price"],["南部粽",85,"so_price"]]
     session["items"]=[["原味肉粽（無蛋）",0,"o_n_item"],["原味肉粽（有蛋）",0,"o_item"],["干貝粽",0,"sc_item"],["干貝鮑魚粽",0,"sc_a_item"],["鹼粽",0,"a_item"],["紅豆鹼粽",0,"b_a_item"],["南部粽",0,"so_item"]]
     collection=db.order
     result1=list(collection.find({},{"order-number":1}).sort("order-number",-1))

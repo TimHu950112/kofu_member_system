@@ -39,11 +39,11 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {%for i in items%}
+                                {%for i in range(7)%}
                                 <tr>
-                                    <td>{{i[0]}}</td>
-                                    <td><input type="text" style="width: 50px; height:35px;" name="{{i[2]}}"
-                                            class="me-1" value="{{i[1]}}">顆</td>
+                                    <td>{{items[i][0]}} ${{price[i][1]}}</td>
+                                    <td><input type="text" style="width: 50px; height:35px;" name="{{items[i][2]}}"
+                                            class="me-1" value="{{items[i][1]}}">顆</td>
                                 </tr>
                                 {%endfor%}
                                 <tr>
