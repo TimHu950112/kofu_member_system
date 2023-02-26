@@ -207,7 +207,7 @@ def delete_order():
 @app.route("/edit_price", methods=["GET","POST"])
 def edit_price():
     session["price"]=[["原味肉粽（無蛋）",int(request.form["o_n_price"]),"o_n_price"],["原味肉粽（有蛋）",int(request.form["o_price"]),"o_price"],["干貝粽",int(request.form["sc_price"]),"sc_price"],["干貝鮑魚粽",int(request.form["sc_a_price"]),"sc_a_price"],["鹼粽",int(request.form["a_price"]),"a_price"],["紅豆鹼粽",int(request.form["b_a_price"]),"b_a_price"],["南部粽",int(request.form["so_price"]),"so_price"]]
-    return render_template("add_order_page.html",price=session["price"],items=session["items"],cost=0)
+    return render_template("add_order_page.html",price=session["price"],items=session["items"],cost=0,order_number=session["order-number"])
 #finish_order_function
 @app.route("/finish_order", methods=["GET","POST"])
 def finish_order():
