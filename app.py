@@ -5,8 +5,8 @@ from unittest import result
 import pymongo
 import certifi
 from requests import Session
-from datetime import date,datetime
-import pytz
+# from datetime import date,datetime
+# import pytz
 
 
 #導入物件設定
