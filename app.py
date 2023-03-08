@@ -6,6 +6,7 @@ import pymongo
 import certifi
 from requests import Session
 from datetime import date,datetime
+import pytz
 
 
 #導入物件設定
@@ -72,7 +73,7 @@ def add_order_page():
     collection=db.order
     result1=list(collection.find({},{"order-number":1}).sort("order-number",-1))
     session["order-number"]=str(int(result1[0]["order-number"])+1)
-    flash(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+    flash(datetime.now(pytz.timezone('Asia/Taipei')).strftime('%Y-%m-%d %H:%M:%S'))
     return render_template("add_order_page.html",price=session["price"],items=session["items"],cost=0,order_number=session["order-number"])
 
 
