@@ -16,7 +16,7 @@ from data import*
 client=pymongo.MongoClient("mongodb+srv://root:root123@cluster0.rpebx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",tlsCAFile=certifi.where())
 db=client.kofu_member_system
 print("\n"+"資料庫連線成功".center(87,"*")+"\n")
-
+print(datetime.now(pytz.timezone('Asia/Taipei')).strftime('%Y-%m-%d %H:%M:%S'))
 #初始化 flask 伺服器
 app=Flask(
     __name__,
