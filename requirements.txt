@@ -20,6 +20,7 @@ pyperclip==1.8.2
 PyRect==0.2.0
 PyScreeze==0.1.28
 pytweening==1.0.4
+pytz==2022.7.1
 requests==2.26.0
 rich==12.4.4
 rubicon-objc==0.4.2
