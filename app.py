@@ -5,8 +5,8 @@ from unittest import result
 import pymongo
 import certifi
 from requests import Session
-# from datetime import date,datetime
-# import pytz
+from datetime import date,datetime
+import pytz
 
 
 #導入物件設定
@@ -72,8 +72,17 @@ def add_order_page():
     session["items"]=[["原味肉粽（無蛋）",0,"o_n_item"],["原味肉粽（有蛋）",0,"o_item"],["干貝粽",0,"sc_item"],["干貝鮑魚粽",0,"sc_a_item"],["鹼粽",0,"a_item"],["紅豆鹼粽",0,"b_a_item"],["南部粽",0,"so_item"]]
     collection=db.order
     result1=list(collection.find({},{"order-number":1}).sort("order-number",-1))
+    date=datetime.now(pytz.timezone('Asia/Taipei')).strftime('%Y-%m-%d').split("-")
+    result=list(collection.find({
+        "$and":[
+            {"year":date[0]},
+            {"month":date[1]},
+            {"day":date[2]}
+        ]
+    }))
+    if len(result)>100:
+        flash("已達當日訂單上限（100張）！")
     session["order-number"]=str(int(result1[0]["order-number"])+1)
-    # flash(datetime.now(pytz.timezone('Asia/Taipei')).strftime('%Y-%m-%d %H:%M:%S'))
     return render_template("add_order_page.html",price=session["price"],items=session["items"],cost=0,order_number=session["order-number"])
 
 
@@ -157,11 +166,13 @@ def search_order():
     if request.form['item']=="number":
         order_object=[]
         result=list(collection.find().sort([("status",1),("year",1),["month",1],["day",1]]))
+
+        # result.find({})
         
     order_object=[]
     for i in range(len(result)):
         order_object.append(Order(result[i]["phone"],result[i]["order-number"],{"原味肉粽(無蛋)":result[i]["原味肉粽(無蛋)"],"原味肉粽(有蛋)":result[i]["原味肉粽(有蛋)"],"干貝粽":result[i]["干貝粽"],"干貝鮑魚粽":result[i]["干貝鮑魚粽"],"鹼粽":result[i]["鹼粽"],"紅豆鹼粽":result[i]["紅豆鹼粽"],"南部粽":result[i]["南部粽"]},result[i]["year"]+"-"+result[i]["month"]+"-"+result[i]["day"]+" "+result[i]["time"],result[i]["status"]))
-        number_list=[0,0,0,0,0,0,0]
+        number_list=[0,0,0,0,0,0,0,0]
     for i in range(len(order_object)):
         number_list[0]+=int(order_object[i].items['原味肉粽(無蛋)'])
         number_list[1]+=int(order_object[i].items['原味肉粽(有蛋)'])
@@ -170,10 +181,11 @@ def search_order():
         number_list[4]+=int(order_object[i].items['鹼粽'])
         number_list[5]+=int(order_object[i].items['紅豆鹼粽'])
         number_list[6]+=int(order_object[i].items['南部粽'])
+        number_list[7]+=1
     try:
         print(number_list)
     except:
-        number_list=[0,0,0,0,0,0,0]
+        number_list=[0,0,0,0,0,0,0,0]
     return render_template("order_result_page.html",order_list=order_object,nickname=session["member_data"]["nickname"],number_list=number_list)
 
 
@@ -246,7 +258,5 @@ def cost():
     print("cost",cost)
     session["cost"]=cost
     return render_template("add_order_page.html",price=session["price"],items=session["items"],cost=cost,order_number=session["order-number"])
-
-
 if __name__=='__main__':
     app.run(port=5000,debug=True)
