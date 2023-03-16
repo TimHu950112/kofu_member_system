@@ -72,6 +72,7 @@ def add_order_page():
     session["items"]=[["原味肉粽（無蛋）",0,"o_n_item"],["原味肉粽（有蛋）",0,"o_item"],["干貝粽",0,"sc_item"],["干貝鮑魚粽",0,"sc_a_item"],["鹼粽",0,"a_item"],["紅豆鹼粽",0,"b_a_item"],["南部粽",0,"so_item"]]
     collection=db.order
     result1=list(collection.find({},{"order-number":1}).sort("order-number",-1))
+    #單日訂單上限
     date=datetime.now(pytz.timezone('Asia/Taipei')).strftime('%Y-%m-%d').split("-")
     result=list(collection.find({
         "$and":[
