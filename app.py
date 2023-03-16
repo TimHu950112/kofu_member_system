@@ -70,6 +70,7 @@ def add_order_page():
     session["edit"]="none"
     session["price"]=[["原味肉粽（無蛋）",85,"o_n_price"],["原味肉粽（有蛋）",95,"o_price"],["干貝粽",158,"sc_price"],["干貝鮑魚粽",188,"sc_a_price"],["鹼粽",35,"a_price"],["紅豆鹼粽",40,"b_a_price"],["南部粽",85,"so_price"]]
     session["items"]=[["原味肉粽（無蛋）",0,"o_n_item"],["原味肉粽（有蛋）",0,"o_item"],["干貝粽",0,"sc_item"],["干貝鮑魚粽",0,"sc_a_item"],["鹼粽",0,"a_item"],["紅豆鹼粽",0,"b_a_item"],["南部粽",0,"so_item"]]
+    session["each_cost"]=[["原味肉粽（無蛋）",0,"o_n_cost"],["原味肉粽（有蛋）",0,"o_cost"],["干貝粽",0,"sc_cost"],["干貝鮑魚粽",0,"sc_a_cost"],["鹼粽",0,"a_cost"],["紅豆鹼粽",0,"b_a_cost"],["南部粽",0,"so_cost"]]
     collection=db.order
     result1=list(collection.find({},{"order-number":1}).sort("order-number",-1))
     #單日訂單上限
@@ -84,7 +85,7 @@ def add_order_page():
     if len(result)>100:
         flash("已達當日訂單上限（100張）！")
     session["order-number"]=str(int(result1[0]["order-number"])+1)
-    return render_template("add_order_page.html",price=session["price"],items=session["items"],cost=0,order_number=session["order-number"])
+    return render_template("add_order_page.html",price=session["price"],items=session["items"],cost=0,order_number=session["order-number"],each_cost=session["each_cost"])
 
 
 #login_function
@@ -224,7 +225,7 @@ def delete_order():
 @app.route("/edit_price", methods=["GET","POST"])
 def edit_price():
     session["price"]=[["原味肉粽（無蛋）",int(request.form["o_n_price"]),"o_n_price"],["原味肉粽（有蛋）",int(request.form["o_price"]),"o_price"],["干貝粽",int(request.form["sc_price"]),"sc_price"],["干貝鮑魚粽",int(request.form["sc_a_price"]),"sc_a_price"],["鹼粽",int(request.form["a_price"]),"a_price"],["紅豆鹼粽",int(request.form["b_a_price"]),"b_a_price"],["南部粽",int(request.form["so_price"]),"so_price"]]
-    return render_template("add_order_page.html",price=session["price"],items=session["items"],cost=0,order_number=session["order-number"])
+    return render_template("add_order_page.html",price=session["price"],items=session["items"],cost=0,order_number=session["order-number"],each_cost=session["each_cost"])
 #finish_order_function
 @app.route("/finish_order", methods=["GET","POST"])
 def finish_order():
@@ -237,10 +238,10 @@ def finish_order():
         return render_template("order_page.html") 
     if not "cost" in session:
         flash("尚未小計")
-        return render_template("add_order_page.html",price=session["price"],items=session["items"])
+        return render_template("add_order_page.html",price=session["price"],items=session["items"],each_cost=session["each_cost"])
     if not request.form["phone"]:
         flash("請輸入電話號碼")
-        return render_template("add_order_page.html",price=session["price"],items=session["items"])
+        return render_template("add_order_page.html",price=session["price"],items=session["items"],each_cost=session["each_cost"])
     print(session)
     if Order.search(session["order-number"])!=None:
         flash("該訂單編號已被使用")
@@ -256,8 +257,10 @@ def cost():
     cost=0
     for i in range(len(session["items"])):
         cost+=session["items"][i][1]*session["price"][i][1]
+    for i in range(len(session["each_cost"])):
+        session["each_cost"][i][1]=session["items"][i][1]*session["price"][i][1]
     print("cost",cost)
     session["cost"]=cost
-    return render_template("add_order_page.html",price=session["price"],items=session["items"],cost=cost,order_number=session["order-number"])
+    return render_template("add_order_page.html",price=session["price"],items=session["items"],cost=session['cost'],order_number=session["order-number"],each_cost=session["each_cost"])
 if __name__=='__main__':
     app.run(port=5000,debug=True)
