@@ -34,19 +34,19 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th scope="col">品項</th>
-                                    <th scope="col">數量</th>
-                                    <th scope="col">金額</th>
+                                    <th scope="col-4">品項</th>
+                                    <th scope="col-4">數量</th>
+                                    <th scope="col-4">金額</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {%for i in range(7)%}
                                 <tr>
-                                    <td>{{items[i][0]}} ${{price[i][1]}}</td>
-                                    <td><input type="text" style="width: 45px; height:35px;" name="{{items[i][2]}}"
-                                            class="me-1" value="{{items[i][1]}}">顆</td>
-                                    <td><input type="text" style="width: 45px; height:35px;"
-                                            class="me-1" value="{{each_cost[i][1]}}" disabled>元</td>
+                                    <td style="max-width:100px">{{items[i][0]}} ${{price[i][1]}}</td>
+                                    <td><input type="text" style="max-width: 55px; height:35px;" name="{{items[i][2]}}"
+                                            class="me-1 col" value="{{items[i][1]}}">顆</td>
+                                    <td><input type="text" style="max-width: 70px; height:35px;;"
+                                            class="me-1 col" value="{{each_cost[i][1]}}" disabled>元</td>
                                 </tr>
                                 {%endfor%}
                                 <tr>

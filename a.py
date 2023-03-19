@@ -11,7 +11,7 @@ import time
 #初始化資料庫連線
 client=pymongo.MongoClient("mongodb+srv://root:root123@cluster0.rpebx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",tlsCAFile=certifi.where())
 db=client.kofu_member_system
-print("\n"+"資料庫連線成功".center(87,"*")+"\n")
+print("\n"+'\x1b[6;30;42m' + '資料庫連線成功'.center(87) + '\x1b[0m'+"\n")
 
 #初始化 flask 伺服器
 app=Flask(

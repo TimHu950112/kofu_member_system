@@ -65,7 +65,7 @@ class Member:
         "member_name":member_name,
         "phone":phone,
         "forever":forever})
-        return True    
+        return True 
 class Order:
     def __init__(self,phone,number,items,date,status):
         self.phone=phone
