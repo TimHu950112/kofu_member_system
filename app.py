@@ -168,7 +168,6 @@ def search_order():
     if request.form['item']=="number":
         order_object=[]
         result=list(collection.find().sort([("status",1),("year",1),["month",1],["day",1]]))
-
         # result.find({})
         
     order_object=[]

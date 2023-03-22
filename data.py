@@ -1,6 +1,7 @@
 from unittest import result
 import pymongo
 import certifi
+import requests
 
 client=pymongo.MongoClient("mongodb+srv://root:root123@cluster0.rpebx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",tlsCAFile=certifi.where())
 db=client.kofu_member_system
@@ -94,11 +95,13 @@ class Order:
         "status":"0",
         "cost":cost
         })
+        # Order.notify("\n編號"+order_number+"訂購成功")
     def search(order_number):
         collection=db.order
         result=collection.find_one({"order-number":int(order_number)})
         return result
     def change(phone,order_number,items,date,cost):
+        Order.notify("\n"+ "【編號】"+str(order_number)+"\n【更改訂單備份】"+str(Order.search(order_number)))
         collection=db.order
         collection.update_one({
         "order-number":int(order_number)},
@@ -128,6 +131,17 @@ class Order:
         }
         })
     def delete(order_number):
+        Order.notify("\n"+ "【編號】"+str(order_number)+"\n【刪除訂單備份】"+str(Order.search(order_number)))
         collection=db.order
         collection.delete_one({
         "order-number":int(order_number)})
+    def notify(message):
+        token = 'MyEnp3d6Rfx9vJffEmqxHaBVAS3gl5oT8bWfg2wM4DV'
+
+        # HTTP 標頭參數與資料
+        headers = { "Authorization": "Bearer " + token }
+        data = { 'message': message }
+
+        # 以 requests 發送 POST 請求
+        requests.post("https://notify-api.line.me/api/notify",
+            headers = headers, data = data)
