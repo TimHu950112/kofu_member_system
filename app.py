@@ -216,7 +216,7 @@ def check_order():
 @app.route("/delete_order")
 def delete_order():
     phone=request.args.get("phone")
-    Order.delete(phone)
+    Order.delete(phone,request.headers.get('User-Agent'))
     flash("刪除成功")
     return render_template("order_page.html")
 
@@ -230,7 +230,7 @@ def edit_price():
 def finish_order():
     if session["edit"]=="edit":
         session["items"]=[["原味肉粽（無蛋）",int(request.form["o_n_item"]),"o_n_item"],["原味肉粽（有蛋）",int(request.form["o_item"]),"o_item"],["干貝粽",int(request.form["sc_item"]),"sc_item"],["干貝鮑魚粽",int(request.form["sc_a_item"]),"sc_a_item"],["鹼粽",int(request.form["a_item"]),"a_item"],["紅豆鹼粽",int(request.form["b_a_item"]),"b_a_item"],["南部粽",int(request.form["so_item"]),"so_item"]]
-        Order.change(request.form["phone"],session["order-number"],session["items"],request.form['order-time'].replace("T","-").split("-"),request.form["cost"])
+        Order.change(request.form["phone"],session["order-number"],session["items"],request.form['order-time'].replace("T","-").split("-"),request.form["cost"],request.headers.get('User-Agent'))
         session["edit"]="none"
         print(request.form["phone"])
         flash("編輯成功")

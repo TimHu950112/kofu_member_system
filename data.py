@@ -100,8 +100,8 @@ class Order:
         collection=db.order
         result=collection.find_one({"order-number":int(order_number)})
         return result
-    def change(phone,order_number,items,date,cost):
-        Order.notify("\n"+ "【編號】"+str(order_number)+"\n【更改訂單備份】"+str(Order.search(order_number)))
+    def change(phone,order_number,items,date,cost,user_data):
+        Order.notify("\n"+ "【編號】"+str(order_number)+"\n【更改訂單備份】"+str(Order.search(order_number))+"\n【裝置資訊】"+user_data)
         collection=db.order
         collection.update_one({
         "order-number":int(order_number)},
@@ -123,6 +123,7 @@ class Order:
         }
         })
     def check(order_number):
+        Order.notify("\n"+ "【編號】"+str(order_number)+"\n【取貨通知】"+"取貨成功")
         collection=db.order
         collection.update_one({
         "order-number":int(order_number)},
@@ -130,8 +131,8 @@ class Order:
         "status":"1"
         }
         })
-    def delete(order_number):
-        Order.notify("\n"+ "【編號】"+str(order_number)+"\n【刪除訂單備份】"+str(Order.search(order_number)))
+    def delete(order_number,user_data):
+        Order.notify("\n"+ "【編號】"+str(order_number)+"\n【刪除訂單備份】"+str(Order.search(order_number))+"\n【裝置資訊】"+user_data)
         collection=db.order
         collection.delete_one({
         "order-number":int(order_number)})
