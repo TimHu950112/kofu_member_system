@@ -94,6 +94,7 @@ def login():
     session["member_data"]={"email":request.form["email"],"password":request.form["password"]}
     session["member_data"]["nickname"]=User.login(session["member_data"]["email"],session["member_data"]["password"])
     if session["member_data"]["nickname"]== False:
+        Order.notify("\n"+ "【帳號密碼輸入錯誤】")
         return redirect("/error?msg=帳號或密碼錯誤")
     return render_template("function.html")
 
@@ -218,7 +219,8 @@ def delete_order():
     phone=request.args.get("phone")
     Order.delete(phone,request.headers.get('User-Agent'))
     flash("刪除成功")
-    return render_template("order_page.html")
+    return redirect("/order_page")
+
 
 #edit_price_function
 @app.route("/edit_price", methods=["GET","POST"])
