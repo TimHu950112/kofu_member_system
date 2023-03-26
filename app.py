@@ -45,7 +45,7 @@ def add_page():
         nickname=session["member_data"]["nickname"]
         return render_template("check_old.html",nickname=nickname)
     flash("請先登入")
-    return render_template("login.html")
+    return redirect("/")
 
 #function_page
 @app.route("/function")
@@ -53,8 +53,7 @@ def function():
     if "member_data" in session:
         return render_template("function.html")
     flash("請先登入")
-    return render_template("login.html")
-
+    return redirect("/")
 #search_order_page
 @app.route("/order_page")
 def order_page():
@@ -96,7 +95,7 @@ def login():
     if session["member_data"]["nickname"]== False:
         Order.notify("\n"+ "【帳號密碼輸入錯誤】")
         return redirect("/error?msg=帳號或密碼錯誤")
-    return render_template("function.html")
+    return redirect("/function")
 
 #logout_funtion
 @app.route("/logout")
@@ -211,15 +210,19 @@ def check_order():
     phone=request.args.get("phone")
     Order.check(phone)
     flash("取貨成功")
-    return render_template("order_page.html")
+    return redirect("/order_page")
 
 #delete_order
 @app.route("/delete_order")
 def delete_order():
-    phone=request.args.get("phone")
-    Order.delete(phone,request.headers.get('User-Agent'))
-    flash("刪除成功")
-    return redirect("/order_page")
+    if "member_data" in session:
+        phone=request.args.get("phone")
+        Order.delete(phone,request.headers.get('User-Agent'))
+        flash("刪除成功")
+        return redirect("/order_page")
+    flash("請先登入")
+    print("none")
+    return redirect("/")
 
 
 #edit_price_function
@@ -236,7 +239,7 @@ def finish_order():
         session["edit"]="none"
         print(request.form["phone"])
         flash("編輯成功")
-        return render_template("order_page.html") 
+        return redirect("/order_page")
     if not "cost" in session:
         flash("尚未小計")
         return render_template("add_order_page.html",price=session["price"],items=session["items"],each_cost=session["each_cost"])
