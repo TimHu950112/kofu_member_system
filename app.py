@@ -66,26 +66,28 @@ def order_page():
 #add_order_page
 @app.route("/add_order_page")
 def add_order_page():
-    session["edit"]="none"
-    session["price"]=[["原味肉粽（無蛋）",85,"o_n_price"],["原味肉粽（有蛋）",95,"o_price"],["干貝粽",158,"sc_price"],["干貝鮑魚粽",188,"sc_a_price"],["鹼粽",35,"a_price"],["紅豆鹼粽",40,"b_a_price"],["南部粽",85,"so_price"]]
-    session["items"]=[["原味肉粽（無蛋）",0,"o_n_item"],["原味肉粽（有蛋）",0,"o_item"],["干貝粽",0,"sc_item"],["干貝鮑魚粽",0,"sc_a_item"],["鹼粽",0,"a_item"],["紅豆鹼粽",0,"b_a_item"],["南部粽",0,"so_item"]]
-    session["each_cost"]=[["原味肉粽（無蛋）",0,"o_n_cost"],["原味肉粽（有蛋）",0,"o_cost"],["干貝粽",0,"sc_cost"],["干貝鮑魚粽",0,"sc_a_cost"],["鹼粽",0,"a_cost"],["紅豆鹼粽",0,"b_a_cost"],["南部粽",0,"so_cost"]]
-    collection=db.order
-    result1=list(collection.find({},{"order-number":1}).sort("order-number",-1))
-    #單日訂單上限
-    date=datetime.now(pytz.timezone('Asia/Taipei')).strftime('%Y-%m-%d').split("-")
-    result=list(collection.find({
-        "$and":[
-            {"year":date[0]},
-            {"month":date[1]},
-            {"day":date[2]}
-        ]
-    }))
-    if len(result)>100:
-        flash("已達當日訂單上限（100張）！")
-    session["order-number"]=str(int(result1[0]["order-number"])+1)
-    return render_template("add_order_page.html",price=session["price"],items=session["items"],cost=0,order_number=session["order-number"],each_cost=session["each_cost"])
-
+    if "member_data" in session:
+        session["edit"]="none"
+        session["price"]=[["原味肉粽（無蛋）",85,"o_n_price"],["原味肉粽（有蛋）",95,"o_price"],["干貝粽",158,"sc_price"],["干貝鮑魚粽",188,"sc_a_price"],["鹼粽",35,"a_price"],["紅豆鹼粽",40,"b_a_price"],["南部粽",85,"so_price"]]
+        session["items"]=[["原味肉粽（無蛋）",0,"o_n_item"],["原味肉粽（有蛋）",0,"o_item"],["干貝粽",0,"sc_item"],["干貝鮑魚粽",0,"sc_a_item"],["鹼粽",0,"a_item"],["紅豆鹼粽",0,"b_a_item"],["南部粽",0,"so_item"]]
+        session["each_cost"]=[["原味肉粽（無蛋）",0,"o_n_cost"],["原味肉粽（有蛋）",0,"o_cost"],["干貝粽",0,"sc_cost"],["干貝鮑魚粽",0,"sc_a_cost"],["鹼粽",0,"a_cost"],["紅豆鹼粽",0,"b_a_cost"],["南部粽",0,"so_cost"]]
+        collection=db.order
+        result1=list(collection.find({},{"order-number":1}).sort("order-number",-1))
+        #單日訂單上限
+        date=datetime.now(pytz.timezone('Asia/Taipei')).strftime('%Y-%m-%d').split("-")
+        result=list(collection.find({
+            "$and":[
+                {"year":date[0]},
+                {"month":date[1]},
+                {"day":date[2]}
+            ]
+        }))
+        if len(result)>100:
+            flash("已達當日訂單上限（100張）！")
+        session["order-number"]=str(int(result1[0]["order-number"])+1)
+        return render_template("add_order_page.html",price=session["price"],items=session["items"],cost=0,order_number=session["order-number"],each_cost=session["each_cost"])
+    flash("請先登入")
+    return redirect("/")
 
 #login_function
 @app.route("/login",methods=["GET","POST"])
