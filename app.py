@@ -151,9 +151,10 @@ def search_order():
         flash("請選擇搜尋方式")
         return redirect("/order_page")
     if request.form['item']!="number":
-        if not request.form["phone"]:
-            flash("搜尋欄不能為空白")
-            return redirect("/order_page")
+        if request.form['item']!="today":
+            if not request.form["phone"]:
+                flash("搜尋欄不能為空白")
+                return redirect("/order_page")
     if request.form['item']=="order-number":
         result=list(collection.find({"order-number":int(request.form['phone'])}))
     if request.form['item']=="phone":
@@ -167,6 +168,15 @@ def search_order():
                 {"day":date[2]}
             ]
         }).sort([("status",1)]))
+    if request.form['item']=="today":
+        date=datetime.now(pytz.timezone('Asia/Taipei')).strftime('%Y-%m-%d').split("-")
+        result=list(collection.find({
+            "$and":[
+                {"year":date[0]},
+                {"month":date[1]},
+                {"day":date[2]}
+            ]
+        }))
     if request.form['item']=="number":
         order_object=[]
         result=list(collection.find().sort([("status",1),("year",1),["month",1],["day",1]]))
@@ -189,6 +199,7 @@ def search_order():
         print(number_list)
     except:
         number_list=[0,0,0,0,0,0,0,0]
+    print(result)
     return render_template("order_result_page.html",order_list=order_object,nickname=session["member_data"]["nickname"],number_list=number_list)
 
 
