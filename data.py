@@ -39,8 +39,8 @@ class Member:
         #search_function
         if way=="search":
             #old member
-            if result_1!=None:
-                return result_1["member_name"]
+            # if result_1!=None:
+            #     return result_1["member_name"]
             #new member
             if result!=None:
                 return result["member_name"]
