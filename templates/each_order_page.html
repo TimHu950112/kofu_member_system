@@ -55,7 +55,8 @@
                 </div>
                 <b class="mt-2 mb-1">訂單編號</b>
                 <div class="col mb-2">
-                    <input type="text" id="order-number" name="order-number" value="{{order_number}}" placeholder="請輸入訂單編號" disabled>
+                    <input type="text" id="order-number" name="order-number" value="{{order_number}}"
+                        placeholder="請輸入訂單編號" disabled>
                 </div>
                 <b class="mt-2 mb-1">取貨時間</b>
                 <div class="col">
@@ -89,12 +90,24 @@
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body" style="font-weight: 800;">
-                                請確認是否刪除訂單
+                                <h5>請確認是否刪除訂單</h5>
+                                <form action="/delete_order?phone={{order_number}}" method="POST" class="d-flex">
+                                    <select class="form-select col d-inline-flex" aria-label="item" style="height: 50px"
+                                        name="delete_member" required>
+                                        <option selected disabled value="">請選取刪除人員</option>
+                                        <option value="雪婷">雪婷</option>
+                                        <option value="玟瑄">玟瑄</option>
+                                        <option value="姵穎">姵穎</option>
+                                        <option value="如菁">如菁</option>
+                                        <option value="雪華">雪華</option>
+                                        <option value="小燕">小燕</option>
+                                    </select>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                                <button type="button" class="btn btn-danger" onclick="location.href='/delete_order?phone={{order_number}}';">確認刪除</button>
+                                <button type="submit" class="btn btn-danger">確認刪除</button>
                             </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -113,7 +126,8 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                                <button type="button" class="btn btn-success" onclick="location.href='/check_order?phone={{order_number}}';">確認取貨</button>
+                                <button type="button" class="btn btn-success"
+                                    onclick="location.href='/check_order?phone={{order_number}}';">確認取貨</button>
                             </div>
                         </div>
                     </div>

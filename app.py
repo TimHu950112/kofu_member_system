@@ -226,11 +226,11 @@ def check_order():
     return redirect("/order_page")
 
 #delete_order
-@app.route("/delete_order")
+@app.route("/delete_order" ,methods=["GET","POST"])
 def delete_order():
     if "member_data" in session:
         phone=request.args.get("phone")
-        Order.delete(phone,request.headers.get('User-Agent'))
+        Order.delete(phone,request.headers.get('User-Agent'),request.form["delete_member"])
         flash("刪除成功")
         return redirect("/order_page")
     flash("請先登入")

@@ -131,14 +131,14 @@ class Order:
         "status":"1"
         }
         })
-    def delete(order_number,user_data):
-        Order.notify("\n"+ "【編號】"+str(order_number)+"\n【刪除訂單備份】"+str(Order.search(order_number))+"\n【裝置資訊】"+user_data)
+    def delete(order_number,user_data,delete_member):
+        Order.notify("\n"+ "【編號】"+str(order_number)+"\n【刪除訂單備份】"+str(Order.search(order_number))+"\n【裝置資訊】"+user_data+"\n【刪除人員】"+delete_member)
         collection=db.order
         collection.delete_one({
         "order-number":int(order_number)})
     def notify(message):
         token = 'MyEnp3d6Rfx9vJffEmqxHaBVAS3gl5oT8bWfg2wM4DV'
-
+        # token="oIPzGSHqmO1r2yk7SjyxMfHJSzjoTk3WMedhRtbt2xB" 測試用token
         # HTTP 標頭參數與資料
         headers = { "Authorization": "Bearer " + token }
         data = { 'message': message }
