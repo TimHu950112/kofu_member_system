@@ -178,9 +178,13 @@ def search_order():
             ]
         }))
     if request.form['item']=="number":
-        order_object=[]
-        result=list(collection.find().sort([("status",1),("year",1),["month",1],["day",1]]))
-        # result.find({})
+        if session["member_data"]["nickname"] =="TimHu" or session["member_data"]["nickname"] =="Yuan":
+            order_object=[]
+            result=list(collection.find().sort([("status",1),("year",1),["month",1],["day",1]]))
+            # result.find({})
+        else:
+            flash("你沒有權限查看此內容")
+            return redirect("/order_page")
         
     order_object=[]
     for i in range(len(result)):
