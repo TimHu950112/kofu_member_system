@@ -178,7 +178,7 @@ def search_order():
             ]
         }))
     if request.form['item']=="number":
-        if session["member_data"]["nickname"] =="TimHu" or session["member_data"]["nickname"] =="Yuan":
+        if session["member_data"]["nickname"] =="TimHu" or session["member_data"]["nickname"] =="Yuan" or session["member_data"]["nickname"] =="雪婷":
             order_object=[]
             result=list(collection.find().sort([("status",1),("year",1),["month",1],["day",1]]))
             # result.find({})
