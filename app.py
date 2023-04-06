@@ -203,6 +203,7 @@ def search_order():
         number_list[5]+=int(order_object[i].items['紅豆鹼粽'])
         number_list[6]+=int(order_object[i].items['南部粽'])
         number_list[7]+=1
+    
     try:
         print(number_list)
         number_list[8]=not_recieve
@@ -287,5 +288,16 @@ def cost():
     print("cost",cost)
     session["cost"]=cost
     return render_template("add_order_page.html",price=session["price"],items=session["items"],cost=session['cost'],order_number=session["order-number"],each_cost=session["each_cost"])
+@app.route("/secret")
+def count_all_cost():
+    if session["member_data"]["nickname"] =="TimHu" or session["member_data"]["nickname"] =="Yuan":
+        collection=db.order
+        result=list(collection.find())
+        all_cost=0
+        for i in result:
+            all_cost+=int(i["cost"])
+        return str(all_cost)
+    return "Do not try to know the secret!!"
+
 if __name__=='__main__':
     app.run(port=5000,debug=True)
