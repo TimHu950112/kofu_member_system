@@ -157,8 +157,10 @@ def search_order():
                 return redirect("/order_page")
     if request.form['item']=="order-number":
         result=list(collection.find({"order-number":int(request.form['phone'])}))
+        not_recieve=len(result)-len(list(collection.find({"$and":[{"order-number":int(request.form['phone'])},{"status":"1"}]})))
     if request.form['item']=="phone":
         result=list(collection.find({"phone":request.form['phone']}).sort([("status",1),("year",1),["month",1],["day",1]]))
+        not_recieve=len(result)-len(list(collection.find({"$and":[{"phone":request.form['phone']},{"status":"1"}]})))
     if request.form['item']=="date":
         date=request.form['phone'].split("-")
         result=list(collection.find({
@@ -168,6 +170,7 @@ def search_order():
                 {"day":date[2]}
             ]
         }).sort([("status",1)]))
+        not_recieve=len(result)-len(list(collection.find({"$and":[{"year":date[0]},{"month":date[1]},{"day":date[2]},{"status":"1"}]})))
     if request.form['item']=="today":
         date=datetime.now(pytz.timezone('Asia/Taipei')).strftime('%Y-%m-%d').split("-")
         result=list(collection.find({
@@ -177,6 +180,7 @@ def search_order():
                 {"day":date[2]}
             ]
         }))
+        not_recieve=len(result)-len(list(collection.find({"$and":[{"year":date[0]},{"month":date[1]},{"day":date[2]},{"status":"1"}]})))
     if request.form['item']=="number":
         if session["member_data"]["nickname"] =="TimHu" or session["member_data"]["nickname"] =="Yuan" or session["member_data"]["nickname"] =="雪婷":
             order_object=[]
@@ -185,11 +189,11 @@ def search_order():
         else:
             flash("你沒有權限查看此內容")
             return redirect("/order_page")
-        
+        not_recieve=len(result)-len(list(collection.find({"status":"1"})))
     order_object=[]
     for i in range(len(result)):
         order_object.append(Order(result[i]["phone"],result[i]["order-number"],{"原味肉粽(無蛋)":result[i]["原味肉粽(無蛋)"],"原味肉粽(有蛋)":result[i]["原味肉粽(有蛋)"],"干貝粽":result[i]["干貝粽"],"干貝鮑魚粽":result[i]["干貝鮑魚粽"],"鹼粽":result[i]["鹼粽"],"紅豆鹼粽":result[i]["紅豆鹼粽"],"南部粽":result[i]["南部粽"]},result[i]["year"]+"-"+result[i]["month"]+"-"+result[i]["day"]+" "+result[i]["time"],result[i]["status"]))
-        number_list=[0,0,0,0,0,0,0,0]
+        number_list=[0,0,0,0,0,0,0,0,0]
     for i in range(len(order_object)):
         number_list[0]+=int(order_object[i].items['原味肉粽(無蛋)'])
         number_list[1]+=int(order_object[i].items['原味肉粽(有蛋)'])
@@ -201,9 +205,9 @@ def search_order():
         number_list[7]+=1
     try:
         print(number_list)
+        number_list[8]=not_recieve
     except:
-        number_list=[0,0,0,0,0,0,0,0]
-    print(result)
+        number_list=[0,0,0,0,0,0,0,0,0]
     return render_template("order_result_page.html",order_list=order_object,nickname=session["member_data"]["nickname"],number_list=number_list)
 
 
