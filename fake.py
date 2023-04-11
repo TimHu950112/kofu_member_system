@@ -18,24 +18,8 @@ client=pymongo.MongoClient("mongodb+srv://root:root123@cluster0.rpebx.mongodb.ne
 db=client.kofu_member_system
 print("\n"+"資料庫連線成功".center(87,"*")+"\n")
 
-for i in range(1):   
-    collection=db.order
-    collection.insert_one({
-    "phone":"0979928770",
-    "order-number":1,
-    "原味肉粽(無蛋)":str(random.randrange(1000)),
-    "原味肉粽(有蛋)":str(random.randrange(1000)),
-    "干貝粽":str(random.randrange(1000)),
-    "干貝鮑魚粽":str(random.randrange(1000)),
-    "鹼粽":str(random.randrange(1000)),
-    "紅豆鹼粽":str(random.randrange(1000)),
-    "南部粽":str(random.randrange(1000)),
-    "year":"2023",
-    "month":"02",
-    "day":"13",
-    "time":"8:10",
-    "status":"0",
-    "cost":str(random.randrange(100000000))
-    })
-    print(i)
+   
+collection=db.order
+collection.insert_one({'phone': '0937184033', 'order-number': 122, '原味肉粽(無蛋)': 5, '原味肉粽(有蛋)': 0, '干貝粽': 0, '干貝鮑魚粽': 0, '鹼粽': 0, '紅豆鹼粽': 5, '南部粽': 0, 'year': '2023', 'month': '06', 'day': '20', 'time': '12:50', 'status': '0', 'cost': 625})
+
     
