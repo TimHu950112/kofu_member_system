@@ -160,7 +160,7 @@ def search_order():
         result=list(collection.find({"order-number":int(request.form['phone'])}))
         not_recieve=len(result)-len(list(collection.find({"$and":[{"order-number":int(request.form['phone'])},{"status":"1"}]})))
     if request.form['item']=="phone":
-        result=list(collection.find({"phone":request.form['phone']}).sort([("status",1),("year",1),["month",1],["day",1]]))
+        result=list(collection.find({"phone":{"$regex":request.form['phone']}}).sort([("status",1),("year",1),["month",1],["day",1]]))
         not_recieve=len(result)-len(list(collection.find({"$and":[{"phone":request.form['phone']},{"status":"1"}]})))
     if request.form['item']=="date":
         date=request.form['phone'].split("-")
@@ -210,6 +210,7 @@ def search_order():
         number_list[8]=not_recieve
     except:
         number_list=[0,0,0,0,0,0,0,0,0]
+    print(result)
     return render_template("order_result_page.html",order_list=order_object,nickname=session["member_data"]["nickname"],number_list=number_list)
 
 
