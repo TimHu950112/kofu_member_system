@@ -297,7 +297,8 @@ def count_all_cost():
         result=list(collection.find())
         all_cost=0
         for i in result:
-            all_cost+=int(re.sub('[\u4e00-\u9fa5]', '', str(i["cost"])))
+            each_cost=re.sub(u"\\(.*?\\)|\\{.*?\\}|\\[.*?\\]|\\<.*?\\>", "", str(i["cost"]))
+            all_cost+=int(re.sub('[\u4e00-\u9fa5]', '', str(each_cost)))
         return str(all_cost)
     return "Do not try to know the secret!!"
 if __name__=='__main__':
