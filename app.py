@@ -29,6 +29,7 @@ app.secret_key="any string"
 #index_page
 @app.route("/")
 def index():
+    print(session)
     if "member_data" in session:
         return redirect("/function")
     return render_template("login.html")
@@ -93,11 +94,11 @@ def add_order_page():
 #login_function
 @app.route("/login",methods=["GET","POST"])
 def login():
-    session["member_data"]={"email":request.form["email"],"password":request.form["password"]}
-    session["member_data"]["nickname"]=User.login(session["member_data"]["email"],session["member_data"]["password"])
-    if session["member_data"]["nickname"]== False:
+    result=User.login(request.form["email"],request.form["password"])
+    if result == False:
         Order.notify("\n"+ "【帳號密碼輸入錯誤】")
         return redirect("/error?msg=帳號或密碼錯誤")
+    session["member_data"]={"email":request.form["email"],"password":request.form["password"],"nickname":result}
     return redirect("/function")
 
 #logout_funtion
