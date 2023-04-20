@@ -29,8 +29,8 @@ app.secret_key="any string"
 #index_page
 @app.route("/")
 def index():
-    session.clear()
-    print(session)
+    if "member_data" in session:
+        return redirect("/function")
     return render_template("login.html")
 
 #error_page
