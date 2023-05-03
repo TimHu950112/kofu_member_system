@@ -61,7 +61,22 @@ def function():
 def order_page():
     if "member_data" in session:
         nickname=session["member_data"]["nickname"]
-        return render_template("order_page.html",nickname=nickname)
+        #判斷有無今日訂單
+        collection=db.order
+        date=datetime.now(pytz.timezone('Asia/Taipei')).strftime('%Y-%m-%d').split("-")
+        result=list(collection.find({
+            "$and":[
+                {"year":date[0]},
+                {"month":date[1]},
+                {"day":date[2]},
+                {"status":"0"}
+            ]
+        }))
+        if not result:
+            order_notify=None
+        else:
+            order_notify=len(result)
+        return render_template("order_page.html",nickname=nickname,order_notify=order_notify)
     flash("請先登入")
     return redirect("/")
 
@@ -211,7 +226,7 @@ def search_order():
         number_list[8]=not_recieve
     except:
         number_list=[0,0,0,0,0,0,0,0,0]
-    print(result)
+    # print(result)
     return render_template("order_result_page.html",order_list=order_object,nickname=session["member_data"]["nickname"],number_list=number_list)
 
 
