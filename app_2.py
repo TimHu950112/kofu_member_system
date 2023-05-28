@@ -1,19 +1,16 @@
-from crypt import methods
-from imp import reload
 from flask import*
-from unittest import result
-import pymongo
-import certifi
-from requests import Session
-from datetime import date,datetime
-import pytz
+from datetime import datetime
+from dotenv import load_dotenv
+import pymongo,certifi,pytz,os
+
+load_dotenv()
 
 
 #導入物件設定
 from data import*
 
 #初始化資料庫連線
-client=pymongo.MongoClient("mongodb+srv://root:root123@cluster0.rpebx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",tlsCAFile=certifi.where())
+client=pymongo.MongoClient("mongodb+srv://"+os.getenv("mongodb")+".rpebx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",tlsCAFile=certifi.where())
 db=client.kofu_member_system
 print("\n"+'\x1b[6;30;42m' + '資料庫連線成功'.center(87) + '\x1b[0m'+"\n")
 print(datetime.now(pytz.timezone('Asia/Taipei')).strftime('%Y-%m-%d %H:%M:%S'))
@@ -23,7 +20,7 @@ app=Flask(
     static_folder="static",
     static_url_path="/static"
 )
-app.secret_key="any string"
+app.secret_key=os.getenv("secret_key")
 
 #index_page
 @app.route("/")
