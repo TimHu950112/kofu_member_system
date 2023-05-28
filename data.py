@@ -137,7 +137,7 @@ class Order:
         collection.delete_one({
         "order-number":int(order_number)})
     def notify(message):
-        token = 'MyEnp3d6Rfx9vJffEmqxHaBVAS3gl5oT8bWfg2wM4DV'
+        token = os.getenv("line_notify")
         # token="oIPzGSHqmO1r2yk7SjyxMfHJSzjoTk3WMedhRtbt2xB" 測試用token
         # HTTP 標頭參數與資料
         headers = { "Authorization": "Bearer " + token }
