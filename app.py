@@ -311,10 +311,14 @@ def count_all_cost():
         collection=db.order
         result=list(collection.find())
         all_cost=0
-        for i in result:
-            each_cost=re.sub(u"\\(.*?\\)|\\{.*?\\}|\\[.*?\\]|\\<.*?\\>", "", str(i["cost"]))
-            all_cost+=int(re.sub('[\u4e00-\u9fa5]', '', str(each_cost)))
-        return str(all_cost)
+        try:
+            for i in result:
+                print(i["order-number"],i["cost"])
+                each_cost=re.sub(u"\\(.*?\\)|\\{.*?\\}|\\[.*?\\]|\\<.*?\\>", "", str(i["cost"]))
+                all_cost+=int(re.sub('[\u4e00-\u9fa5]', '', str(each_cost)))
+            return str(all_cost)
+        except:
+            return redirect("/error?msg=發生錯誤，請稍後再試")
     return "Do not try to know the secret!!"
 if __name__=='__main__':
     app.run(port=5000,debug=True)
