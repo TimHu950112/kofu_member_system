@@ -195,7 +195,7 @@ def search_order():
         }))
         not_recieve=len(result)-len(list(collection.find({"$and":[{"year":date[0]},{"month":date[1]},{"day":date[2]},{"status":"1"}]})))
     if request.form['item']=="not_receive":
-        result=list(collection.find({"status":"0"}))
+        result=list(collection.find({"status":"0"}).sort([("status",1),("year",1),["month",1],["day",1]]))
         not_recieve=len(result)
     if request.form['item']=="number":
         if session["member_data"]["nickname"] =="TimHu" or session["member_data"]["nickname"] =="Yuan" or session["member_data"]["nickname"] =="雪婷":
