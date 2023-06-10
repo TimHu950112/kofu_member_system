@@ -164,9 +164,10 @@ def search_order():
         return redirect("/order_page")
     if request.form['item']!="number":
         if request.form['item']!="today":
-            if not request.form["phone"]:
-                flash("搜尋欄不能為空白")
-                return redirect("/order_page")
+            if request.form['item']!="not_receive":
+                if not request.form["phone"]:
+                    flash("搜尋欄不能為空白")
+                    return redirect("/order_page")
     if request.form['item']=="order-number":
         result=list(collection.find({"order-number":int(request.form['phone'])}))
         not_recieve=len(result)-len(list(collection.find({"$and":[{"order-number":int(request.form['phone'])},{"status":"1"}]})))
@@ -193,6 +194,9 @@ def search_order():
             ]
         }))
         not_recieve=len(result)-len(list(collection.find({"$and":[{"year":date[0]},{"month":date[1]},{"day":date[2]},{"status":"1"}]})))
+    if request.form['item']=="not_receive":
+        result=list(collection.find({"status":"0"}))
+        not_recieve=len(result)
     if request.form['item']=="number":
         if session["member_data"]["nickname"] =="TimHu" or session["member_data"]["nickname"] =="Yuan" or session["member_data"]["nickname"] =="雪婷":
             order_object=[]
