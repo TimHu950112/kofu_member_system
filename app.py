@@ -182,7 +182,7 @@ def search_order():
                 {"month":date[1]},
                 {"day":date[2]}
             ]
-        }).sort([("status",1)]))
+        }).sort([("status",1),("year",1),["month",1],["day",1]]))
         not_recieve=len(result)-len(list(collection.find({"$and":[{"year":date[0]},{"month":date[1]},{"day":date[2]},{"status":"1"}]})))
     if request.form['item']=="today":
         date=datetime.now(pytz.timezone('Asia/Taipei')).strftime('%Y-%m-%d').split("-")
@@ -192,7 +192,7 @@ def search_order():
                 {"month":date[1]},
                 {"day":date[2]}
             ]
-        }))
+        }).sort([("status",1),("year",1),["month",1],["day",1]]))
         not_recieve=len(result)-len(list(collection.find({"$and":[{"year":date[0]},{"month":date[1]},{"day":date[2]},{"status":"1"}]})))
     if request.form['item']=="not_receive":
         result=list(collection.find({"status":"0"}).sort([("status",1),("year",1),["month",1],["day",1]]))
