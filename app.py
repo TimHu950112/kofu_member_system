@@ -318,6 +318,7 @@ def count_all_cost():
                 all_cost+=int(re.sub('[\u4e00-\u9fa5]', '', str(each_cost)))
             return str(all_cost)
         except:
+            flash(i["order-number"],i["cost"])
             return redirect("/error?msg=發生錯誤，請稍後再試")
     return "Do not try to know the secret!!"
 if __name__=='__main__':
