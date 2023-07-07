@@ -67,6 +67,18 @@ class Member:
         "phone":phone,
         "forever":forever})
         return True 
+    
+    def predict_search(input_text):
+        collection=db.new
+        matched_users = collection.find({
+            'phone': {'$regex': str(input_text), '$options': 'i'}})
+        predictions = []
+        for user in matched_users:
+            predictions.append(user['phone'])  # 假設預測姓名
+            if len(predictions)>=3:
+                break
+        return predictions
+
 class Order:
     def __init__(self,phone,number,items,date,status):
         self.phone=phone

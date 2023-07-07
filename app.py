@@ -122,16 +122,19 @@ def logout():
 #To check if he is old member or already a new member
 @app.route("/check_old",methods=["GET","POST"])
 def check_old():
-    session["phone"]=request.form["phone"]
-    member_status=Member.check("add",session["phone"])
-    print(member_status)
-    if member_status==True:
-        flash("已經是新會員")
-        return render_template("check_old.html")
-    if member_status==None:
-        return render_template("add_new.html",phone=session["phone"],member_name="請輸入名稱")
-    flash("舊會員"+member_status+"請確認是否註冊為永久會員")
-    return render_template("add_new.html",phone=session["phone"],member_name=member_status)
+    if "member_data" in session:
+        session["phone"]=request.form["phone"]
+        member_status=Member.check("add",session["phone"])
+        print(member_status)
+        if member_status==True:
+            flash("已經是新會員")
+            return render_template("check_old.html")
+        if member_status==None:
+            return render_template("add_new.html",phone=session["phone"],member_name="請輸入名稱")
+        flash("舊會員"+member_status+"請確認是否註冊為永久會員")
+        return render_template("add_new.html",phone=session["phone"],member_name=member_status)
+    flash("請先登入")
+    return redirect("/")
 
 #add_member_function
 #To add member to mongodb 
@@ -149,11 +152,25 @@ def add():
 #search_member_function
 @app.route("/search",methods=["GET","POST"])
 def search():
-    status=Member.check("search",request.form["phone"])
-    if status==False:
-        flash("查無資料")
-        return render_template("function.html",status="無資料")
-    return render_template("function.html",status=status)
+    if "member_data" in session:
+        status=Member.check("search",request.form["phone"])
+        if status==False:
+            flash("查無資料")
+            return render_template("function.html",status="無資料")
+        return render_template("function.html",status=status)
+    flash("請先登入")
+    return redirect("/")
+
+@app.route("/quick_search",methods=["GET","POST"])
+def quick_search():
+    if "member_data" in session:
+        status=Member.check("search",request.args.get('phone'))
+        if status==False:
+            flash("查無資料")
+            return render_template("function.html",status="無資料")
+        return render_template("function.html",status=status)
+    flash("請先登入")
+    return redirect("/")
 
 #search_order_function
 @app.route("/search_order",methods=["GET","POST"])
@@ -246,10 +263,13 @@ def order():
 #check_order
 @app.route("/check_order")
 def check_order():
-    phone=request.args.get("phone")
-    Order.check(phone)
-    flash("取貨成功")
-    return redirect("/order_page")
+    if "member_data" in session:
+        phone=request.args.get("phone")
+        Order.check(phone)
+        flash("取貨成功")
+        return redirect("/order_page")
+    flash("請先登入")
+    return redirect("/")
 
 #delete_order
 @app.route("/delete_order" ,methods=["GET","POST"])
@@ -321,5 +341,14 @@ def count_all_cost():
             flash(i["order-number"],i["cost"])
             return redirect("/error?msg=發生錯誤，請稍後再試")
     return "Do not try to know the secret!!"
+
+@app.route('/predict', methods=['POST'])
+def predict():
+    if "member_data" in session:
+        input_text = request.form['input']
+        return jsonify({'predictions': Member.predict_search(input_text)})
+    flash("請先登入")
+    return redirect("/")
+
 if __name__=='__main__':
     app.run(port=5000,debug=True)
