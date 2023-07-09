@@ -24,17 +24,17 @@
             <div class="modal-body">
                 <form action="/add_coffee" method="POST">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control take_out_phone" id="floatingInput" placeholder="請輸入寄杯電話" name="phone">
+                        <input type="text" class="form-control take_out_phone" id="floatingInput" placeholder="請輸入寄杯電話" name="phone" required>
                         <label for="floatingInput">請輸入寄杯電話</label>
                     </div>
                     <h5 class="take_out">搜尋結果:</h5>
-                    <select class="form-select mb-3" id="inputGroupSelect01" name="item">
+                    <select class="form-select mb-3" id="inputGroupSelect01" name="item" required>
                         <option selected>請選擇寄杯品項</option>
                         <option value="70">70元</option>
                         <option value="80">80元</option>
                     </select>
                     <div class="form-floating mb-3 ">
-                        <input type="text" class="form-control" id="floatingInput" placeholder="請輸入寄杯數量" name="number">
+                        <input type="text" class="form-control" id="floatingInput" placeholder="請輸入寄杯數量" name="number" required>
                         <label for="floatingInput">請輸入寄杯數量<span style="color:red">（包含贈送數量）</span></label>
                     </div>
                 
@@ -60,17 +60,17 @@
             <div class="modal-body">
                 <form action="/take_coffee" method="POST">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control take_out_phone" id="floatingInput" placeholder="請輸入取杯電話" name="phone">
+                        <input type="text" class="form-control take_out_phone" id="floatingInput" placeholder="請輸入取杯電話" name="phone" required>
                         <label for="floatingInput">請輸入取杯電話</label>
                     </div>
                     <h5 class="take_out">搜尋結果:</h5>
-                    <select class="form-select mb-3" id="inputGroupSelect01" name="item">
+                    <select class="form-select mb-3" id="inputGroupSelect01" name="item" required>
                         <option selected>請選擇取杯品項</option>
                         <option value="70">70元</option>
                         <option value="80">80元</option>
                     </select>
                     <div class="form-floating mb-3 ">
-                        <input type="text" class="form-control" id="floatingInput" placeholder="請輸入取杯數量" name="number">
+                        <input type="text" class="form-control" id="floatingInput" placeholder="請輸入取杯數量" name="number" required>
                         <label for="floatingInput">請輸入取杯數量</label>
                     </div>
                 
