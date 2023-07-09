@@ -26,6 +26,11 @@ app.secret_key=os.getenv("secret_key")
 def index():
     print(session)
     if "member_data" in session:
+        if session["member_data"]["nickname"] =="Yuan":
+            if request.args.get('year')==None or request.args.get('month')==None:
+                return render_template("money.html",data=Money.check_money(0,0),balance=Money.count_money()[0],balance_list=Money.count_money()[1])
+            else:
+                return render_template("money.html",data=Money.check_money(request.args.get('year'),request.args.get('month')),balance=Money.count_money()[0],balance_list=Money.count_money()[1])
         return redirect("/function")
     return render_template("login.html")
 
@@ -384,9 +389,21 @@ def take_coffee():
     flash("請先登入")
     return redirect("/")
 
+@app.route('/update_money',methods=['POST'])
+def update_money():
+    if "member_data" in session:
+        flash(Money.update_money_function(request.form['text'],request.form['categories'],int(request.form['amount'])))
+        return render_template("money.html",data=Money.check_money(0,0),balance=Money.count_money()[0],balance_list=Money.count_money()[1])
+        flash("請先登入")
+    return redirect("/")
 
-
-
+@app.route("/delete_money")
+def delete_money():
+    if "member_data" in session:
+        flash(Money.delete_money_function(request.args.get('id')))
+        return render_template("money.html",data=Money.check_money(0,0),balance=Money.count_money()[0],balance_list=Money.count_money()[1])
+    flash("請先登入")
+    return redirect("/")
 
 if __name__=='__main__':
     app.run(port=5000,debug=True)

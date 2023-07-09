@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+     <title>市場收入支出明細表</title>
+     <!-- Required meta tags -->
+     <meta charset="utf-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+     <!-- Bootstrap CSS v5.2.1 -->
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+
+</head>
+
+<body>
+     <header>
+          <!-- modal -->
+          <div class="modal fade" id="money" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+               aria-labelledby="staticBackdropLabel" aria-hidden="true">
+               <div class="modal-dialog">
+                    <div class="modal-content">
+                         <div class="modal-header">
+                              <h1 class="modal-title fs-5" id="staticBackdropLabel">新增款項</h1>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                   aria-label="Close"></button>
+                         </div>
+                         <div class="modal-body">
+                              <form action="/update_money" method="POST">
+                                   <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="floatingInput"
+                                             placeholder="請輸入名稱" name="text" required>
+                                        <label for="floatingInput">請輸入名稱</label>
+                                   </div>
+                                   <select class="form-select mb-3" id="inputGroupSelect01" name="categories" required>
+                                        <option selected>請選擇類別</option>
+                                        <option value="revenues">收入</option>
+                                        <option value="expenditures">支出</option>
+                                   </select>
+                                   <div class="form-floating mb-3 ">
+                                        <input type="text" class="form-control" id="floatingInput" placeholder="請輸入金額"
+                                             name="amount" required>
+                                        <label for="floatingInput">請輸入金額</label>
+                                   </div>
+
+                         </div>
+
+                         <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                              <button type="submit" class="btn btn-success">送出</button>
+                              </form>
+                         </div>
+                    </div>
+               </div>
+          </div>
+     </header>
+     <main>
+          <div class="container-fluid text-center">
+               <h5 class="mt-3">惠隆市場收入支出明細表</h5>
+               <div class="row align-items-start  mx-2"  style="height: 75vh; font-weight:700; font-size:20px; overflow-y: scroll;">
+                    <table class="table">
+                         <thead>
+                              <tr>
+                                   <th scope="col-1">#</th>
+                                   <th scope="col-1">類別</th>
+                                   <th scope="col-2">名稱</th>
+                                   <th scope="col-2">收入</th>
+                                   <th scope="col-2">支出</th>
+                                   <th scope="col-2">結餘</th>
+                                   <th scope="col-2">刪除</th>
+                              </tr>
+                         </thead>
+                         <tbody>
+                              {% for i in range(0,data|length) %}
+                              <tr>
+                                   <th scope="row">{{data[i]['_id']}}</th>
+                                   <td>{{data[i]['year']}}-{{data[i]['month']}}</td>
+                                   <td>{{data[i]['text']}}</td>
+                                   <td>{{data[i]['revenues']}}</td>
+                                   <td>{{data[i]['expenditures']}}</td>
+                                   <td>{{balance_list[i]}}</td>
+                                   <td><button class="btn btn-danger" onclick='location.href=`/delete_money?id={{data[i]['_id']}}`'>刪除鈕</button></td>
+                              </tr>
+                              {% endfor %}
+                         </tbody>
+                    </table>
+               </div>
+               <form action="/">
+               <div class="row justify-content-center">
+                    <div class="col-md-2 col-5">
+                         <select class="form-select mb-3" id="inputGroupSelect01" name="year" required>
+                              <option selected>年份</option>
+                              {% for i in range(2023,2031)%}
+                              <option value="{{i}}">{{i-1911}}年</option>
+                              {%endfor%}
+                         </select>
+                    </div>
+                    <div class="col-md-2 col-5">
+                         <select class="form-select mb-3" id="inputGroupSelect01" name="month" required>
+                              <option selected>月份</option>
+                              <option value="01">1月</option>
+                              <option value="02">2月</option>
+                              <option value="03">3月</option>
+                              <option value="04">4月</option>
+                              <option value="05">5月</option>
+                              <option value="06">6月</option>
+                              <option value="07">7月</option>
+                              <option value="08">8月</option>
+                              <option value="09">9月</option>
+                              <option value="10">10月</option>
+                              <option value="11">11月</option>
+                              <option value="12">12月</option>
+                         </select>
+                    </div>
+                    <div class="col-md-1 col-2">
+                         <input type="submit" class="btn btn-primary" value="查詢" onclick='location.href="/"'>
+                    </div>
+                    <div class="col-md-1 col-2">
+                         <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#money">新增款項</button>
+                    </div>
+               </div>
+          </form>
+               <div class="row justify-content-center mx-auto">
+                    <div class="col-md-1 col-5">
+                         <button class="btn btn-secondary" onclick='location.href="/function"'>會員系統</button>
+                    </div>
+                    <div class="col-md-1 col-5">
+                         <button class="btn btn-secondary" onclick='location.href="/coffee_shop_page"'>寄杯系統</button>
+                    </div>
+
+               </div>
+          </div>
+     </main>
+     <footer>
+          <!-- place footer here -->
+     </footer>
+     <!-- Bootstrap JavaScript Libraries -->
+     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+          integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
+          </script>
+
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+          integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
+          </script>
+
+     <script>
+          {%with messages=get_flashed_messages()%}
+               {% for i in messages %}
+               alert("{{i}}");
+               {%endfor%}
+          {%endwith%}
+          </script>
+</body>
+
+</html>

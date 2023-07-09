@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
-import pymongo,certifi,requests,os
+from datetime import datetime
+import pymongo,certifi,requests,os,pytz
 
 load_dotenv()
 
@@ -207,4 +208,39 @@ class Coffee:
         else:
             return '查無此人'
 
+class Money:
+    def update_money_function(text,categories,amount):
+        collection=db.money
+        date=datetime.now(pytz.timezone('Asia/Taipei')).strftime('%Y-%m-%d').split("-")
+        result=list(collection.find({},{"_id":1}).sort("_id",-1))
+        if categories=='revenues':
+            collection.insert_one({'_id':len(result)+1,'text':text,'revenues':amount,'expenditures':0,'year':date[0],'month':date[1]})
+            return '上傳成功'
+        elif categories=='expenditures':
+            collection.insert_one({'_id':len(result)+1,'text':text,'revenues':0,'expenditures':amount,'year':date[0],'month':date[1]})
+            return '上傳成功'
+        else:
+            return '上傳失敗'
         
+    def check_money(year,month):
+        collection=db.money
+        date=datetime.now(pytz.timezone('Asia/Taipei')).strftime('%Y-%m-%d').split("-")
+        print(date)
+        if year==0 or month==0:
+            return list(collection.find({"$and":[{"year":date[0]},{"month":date[1]}]}))
+        return list(collection.find({"$and":[{"year":year},{"month":month}]}))
+        
+    def count_money():
+        collection=db.money
+        money=0
+        balance_list=[]
+        for i in list(collection.find({})):
+            money+=i['revenues']
+            money-=i['expenditures']
+            balance_list.append(money)
+        return money,balance_list
+        
+    def delete_money_function(id):
+        collection=db.money
+        collection.delete_one({"_id":int(id)})
+        return "刪除成功"
