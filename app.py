@@ -24,7 +24,6 @@ app.secret_key=os.getenv("secret_key")
 #index_page
 @app.route("/")
 def index():
-    print(session)
     if "member_data" in session:
         if session["member_data"]["nickname"] =="Yuan":
             if request.args.get('year')==None or request.args.get('month')==None:
@@ -114,7 +113,7 @@ def login():
         Order.notify("\n"+ "【帳號密碼輸入錯誤】")
         return redirect("/error?msg=帳號或密碼錯誤")
     session["member_data"]={"email":request.form["email"],"password":request.form["password"],"nickname":result}
-    return redirect("/function")
+    return redirect("/")
 
 #logout_funtion
 @app.route("/logout")

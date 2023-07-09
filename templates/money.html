@@ -74,7 +74,8 @@
                               {% for i in range(0,data|length) %}
                               <tr>
                                    <th scope="row">{{data[i]['_id']}}</th>
-                                   <td>{{data[i]['year']}}-{{data[i]['month']}}</td>
+                                   {% set date = data[i]['year'] | int() %}
+                                   <td>{{date-1911}}-{{data[i]['month']}}</td>
                                    <td>{{data[i]['text']}}</td>
                                    <td>{{data[i]['revenues']}}</td>
                                    <td>{{data[i]['expenditures']}}</td>
