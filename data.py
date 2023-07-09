@@ -158,3 +158,53 @@ class Order:
         # 以 requests 發送 POST 請求
         requests.post("https://notify-api.line.me/api/notify",
             headers = headers, data = data)
+        
+class Coffee:
+    def phone_check(input_text):
+        collection=db.coffee
+        matched_users = collection.find({'phone': {'$regex': str(input_text), '$options': 'i'}})
+        phone = []
+        left= []
+        for user in matched_users:
+            phone.append(user['phone'])  # 假設預測姓名
+            left.append([user['left']['70'],user['left']['80']])
+            if len(phone)>=3:
+                break
+        return phone,left
+    
+    def add_coffee_function(phone,number,item):
+        collection=db.coffee
+        result = list(collection.find({'phone': phone}))
+        print('result',result)
+        if  len(result) != 0:
+            number_1=result[0]['left'][item]+int(number)
+            collection.update_one({
+            "phone":phone},
+            {"$set":{
+            'left.'+item:number_1
+            }
+            })
+            return 'success'
+        elif item=='70':
+            collection.insert_one({'phone':phone,'left':{'70':int(number),'80':0}})
+            return 'success'
+        elif item=='80':
+            collection.insert_one({'phone':phone,'left':{'70':0,'80':int(number)}})
+            return 'success'
+    
+    def take_coffee_function(phone,number,item):
+        collection=db.coffee
+        result = list(collection.find({'phone': phone}))
+        if  len(result) != 0:
+            number_1=result[0]['left'][item]-int(number)
+            collection.update_one({
+            "phone":phone},
+            {"$set":{
+            'left.'+item:number_1
+            }
+            })
+            return '取杯成功'
+        else:
+            return '查無此人'
+
+        

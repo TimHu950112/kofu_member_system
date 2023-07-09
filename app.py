@@ -350,5 +350,43 @@ def predict():
     flash("請先登入")
     return redirect("/")
 
+#咖啡店寄杯功能
+@app.route("/coffee_shop_page")
+def coffee_shop_page():
+    if "member_data" in session:
+        return render_template("coffee_shop_page.html")
+    flash("請先登入")
+    return redirect("/")
+
+@app.route('/phone_check', methods=['POST'])
+def phone_check():
+    if "member_data" in session:
+        data=Coffee.phone_check(request.form['input'])
+        print({'phone': data[0],'number':data[1]})
+        return jsonify({'phone': data[0],'number':data[1]})
+    flash("請先登入")
+    return redirect("/")
+
+@app.route('/add_coffee', methods=['POST'])
+def add_coffee():
+    if "member_data" in session:
+        Coffee.add_coffee_function(request.form['phone'],int(request.form['number']),str(request.form['item']))
+        flash('寄杯成功')
+        return render_template("coffee_shop_page.html")
+    flash("請先登入")
+    return redirect("/")
+
+@app.route('/take_coffee', methods=['POST'])
+def take_coffee():
+    if "member_data" in session:
+        flash(Coffee.take_coffee_function(request.form['phone'],int(request.form['number']),str(request.form['item'])))
+        return render_template("coffee_shop_page.html")
+    flash("請先登入")
+    return redirect("/")
+
+
+
+
+
 if __name__=='__main__':
     app.run(port=5000,debug=True)
