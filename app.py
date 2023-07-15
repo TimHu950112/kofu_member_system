@@ -1,6 +1,11 @@
+from __future__ import unicode_literals
 from flask import*
 from datetime import datetime
 from dotenv import load_dotenv
+from linebot import LineBotApi, WebhookHandler
+from linebot.exceptions import InvalidSignatureError
+from linebot.models import MessageEvent, TextMessage, TextSendMessage
+from multiprocessing import Process
 import pymongo,certifi,pytz,re,os
 
 load_dotenv()
@@ -12,6 +17,10 @@ from data import*
 client=pymongo.MongoClient("mongodb+srv://"+os.getenv("mongodb")+".rpebx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",tlsCAFile=certifi.where())
 db=client.kofu_member_system
 print("\n"+'\x1b[6;30;42m' + '資料庫連線成功'.center(87) + '\x1b[0m'+"\n")
+
+# LINE 聊天機器人的基本資料
+line_bot_api = LineBotApi(os.getenv('line_access'))
+handler = WebhookHandler(os.getenv('line_secret'))
 
 #初始化 flask 伺服器
 app=Flask(
@@ -375,6 +384,10 @@ def phone_check():
 def add_coffee():
     if "member_data" in session:
         Coffee.add_coffee_function(request.form['phone'],int(request.form['number']),str(request.form['item']))
+        result= Line.send_notify(request.form['phone'])
+        if result != False:
+            line_bot_api.push_message(result[0],TextSendMessage('寄杯成功通知\n此次寄杯'+request.form['item']+'元品項共'+request.form['number']+'杯'))
+        Line.save_data(request.form['phone']+'寄'+request.form['item']+'品項'+request.form['number']+'杯')
         flash('寄杯成功')
         return render_template("coffee_shop_page.html")
     flash("請先登入")
@@ -384,6 +397,10 @@ def add_coffee():
 def take_coffee():
     if "member_data" in session:
         flash(Coffee.take_coffee_function(request.form['phone'],int(request.form['number']),str(request.form['item'])))
+        Line.save_data(request.form['phone']+'取'+request.form['item']+'品項'+request.form['number']+'杯')
+        result= Line.send_notify(request.form['phone'])
+        if result != False:
+            line_bot_api.push_message(result[0],TextSendMessage('取杯通知\n此次取杯'+request.form['item']+'元品項共'+request.form['number']+'杯'))
         return render_template("coffee_shop_page.html")
     flash("請先登入")
     return redirect("/")
@@ -403,6 +420,37 @@ def delete_money():
         return render_template("money.html",data=Money.check_money(0,0),balance=Money.count_money()[0],balance_list=Money.count_money()[1])
     flash("請先登入")
     return redirect("/")
+
+#linebot
+# 接收 LINE 的資訊
+@app.route("/callback", methods=['POST'])
+def callback():
+    signature = request.headers['X-Line-Signature']
+
+    body = request.get_data(as_text=True)
+    app.logger.info("Request body: " + body)
+
+    try:
+        handler.handle(body, signature)
+    except InvalidSignatureError:
+        abort(400)
+
+    return 'OK'
+
+# 學你說話
+@handler.add(MessageEvent, message=TextMessage)
+def echo(event):
+    if event.source.user_id != "Udeadbeefdeadbeefdeadbeefdeadbeef":
+        if event.message.text=='寄杯查詢':
+            result=Line.check_coffee(event.source.user_id)
+            if result != False:
+                line_bot_api.reply_message(event.reply_token,TextSendMessage('查詢結果：\n70杯品項剩餘：'+str(result['70'])+'杯\n80杯品項剩餘：'+str(result['80'])+'杯'))
+            else:
+                line_bot_api.reply_message(event.reply_token,TextSendMessage('查無資料，請稍後再試或確認寄杯狀態'))
+        if event.message.text.isnumeric() == True:
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(Line.bind_phone(event.message.text,event.source.user_id)))
+        else:
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='很抱歉，您的回覆超出了我的能力範圍'))
 
 if __name__=='__main__':
     app.run(port=5000,debug=True)

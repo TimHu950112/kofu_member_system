@@ -244,3 +244,47 @@ class Money:
         collection=db.money
         collection.delete_one({"_id":int(id)})
         return "刪除成功"
+
+class Line:
+    def bind_phone(phone,line_id):
+        collection=db.coffee
+        if collection.find_one({'phone':phone})==None:
+            return '請先寄杯後再綁定手機'
+        if collection.find_one({"$and":[{"phone":phone},{"line_id":line_id}]}) != None:
+            return '您的手機已經綁定line'
+        collection.update_one({
+            "phone":phone},
+            {"$set":{'line_id':line_id}})
+        return '手機'+phone+'綁定成功'
+    
+    def send_notify(phone):
+        collection=db.coffee
+        result=collection.find_one({'phone':phone})
+        if result != None:
+            try:
+                return result['line_id'],result['left']
+            except:
+                return False
+        return False
+
+    def check_coffee(line_id):
+            collection=db.coffee
+            result=collection.find_one({'line_id':line_id})
+            if result!= None:
+                return result['left']
+            return False
+
+    def save_data(message):
+        token = os.getenv("coffee_data")
+        headers = { "Authorization": "Bearer " + token }
+        data = { 'message': message }
+
+        # 以 requests 發送 POST 請求
+        requests.post("https://notify-api.line.me/api/notify",
+            headers = headers, data = data)
+    
+        
+
+    
+
+        
