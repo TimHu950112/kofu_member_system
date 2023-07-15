@@ -6,3 +6,5 @@ pytz
 datetime
 python-dotenv
 requests
+line-bot-sdk
+multiprocess
