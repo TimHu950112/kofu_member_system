@@ -230,14 +230,19 @@ class Money:
             return list(collection.find({"$and":[{"year":date[0]},{"month":date[1]}]}))
         return list(collection.find({"$and":[{"year":year},{"month":month}]}))
         
-    def count_money():
+    def count_money(year,month):
         collection=db.money
         money=0
+        date=datetime.now(pytz.timezone('Asia/Taipei')).strftime('%Y-%m-%d').split("-")
+        if year==0 or month==0:
+            year=date[0]
+            month=date[1]
         balance_list=[]
         for i in list(collection.find({})):
             money+=i['revenues']
             money-=i['expenditures']
-            balance_list.append(money)
+            if i['year']==year and i['month']==month:
+                balance_list.append(money)
         return money,balance_list
         
     def delete_money_function(id):

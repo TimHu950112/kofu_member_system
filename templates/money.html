@@ -77,8 +77,16 @@
                                    {% set date = data[i]['year'] | int() %}
                                    <td>{{date-1911}}-{{data[i]['month']}}</td>
                                    <td>{{data[i]['text']}}</td>
+                                   {% if data[i]['revenues'] != 0%}
                                    <td>{{data[i]['revenues']}}</td>
-                                   <td>{{data[i]['expenditures']}}</td>
+                                   {% else %}
+                                   <td></td>
+                                   {% endif %}
+                                   {% if data[i]['expenditures'] != 0%}
+                                   <td style="color:red">{{data[i]['expenditures']}}</td>
+                                   {% else %}
+                                   <td></td>
+                                   {% endif %}
                                    <td>{{balance_list[i]}}</td>
                                    <td><button class="btn btn-danger" onclick='location.href=`/delete_money?id={{data[i]['_id']}}`'>刪除鈕</button></td>
                               </tr>

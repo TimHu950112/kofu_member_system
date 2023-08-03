@@ -36,9 +36,9 @@ def index():
     if "member_data" in session:
         if session["member_data"]["nickname"] =="Yuan":
             if request.args.get('year')==None or request.args.get('month')==None:
-                return render_template("money.html",data=Money.check_money(0,0),balance=Money.count_money()[0],balance_list=Money.count_money()[1])
+                return render_template("money.html",data=Money.check_money(0,0),balance=Money.count_money(0,0)[0],balance_list=Money.count_money(0,0)[1])
             else:
-                return render_template("money.html",data=Money.check_money(request.args.get('year'),request.args.get('month')),balance=Money.count_money()[0],balance_list=Money.count_money()[1])
+                return render_template("money.html",data=Money.check_money(request.args.get('year'),request.args.get('month')),balance=Money.count_money(request.args.get('year'),request.args.get('month'))[0],balance_list=Money.count_money(request.args.get('year'),request.args.get('month'))[1])
         return redirect("/function")
     return render_template("login.html")
 
@@ -409,15 +409,14 @@ def take_coffee():
 def update_money():
     if "member_data" in session:
         flash(Money.update_money_function(request.form['text'],request.form['categories'],int(request.form['amount'])))
-        return render_template("money.html",data=Money.check_money(0,0),balance=Money.count_money()[0],balance_list=Money.count_money()[1])
-        flash("請先登入")
+        return render_template("money.html",data=Money.check_money(0,0),balance=Money.count_money(0,0)[0],balance_list=Money.count_money(0,0)[1])
     return redirect("/")
 
 @app.route("/delete_money")
 def delete_money():
     if "member_data" in session:
         flash(Money.delete_money_function(request.args.get('id')))
-        return render_template("money.html",data=Money.check_money(0,0),balance=Money.count_money()[0],balance_list=Money.count_money()[1])
+        return render_template("money.html",data=Money.check_money(0,0),balance=Money.count_money(0,0)[0],balance_list=Money.count_money(0,0)[1])
     flash("請先登入")
     return redirect("/")
 
@@ -437,7 +436,7 @@ def callback():
 
     return 'OK'
 
-# 學你說話
+
 @handler.add(MessageEvent, message=TextMessage)
 def echo(event):
     if event.source.user_id != "Udeadbeefdeadbeefdeadbeefdeadbeef":
