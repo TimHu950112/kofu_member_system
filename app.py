@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 from flask import*
-from datetime import datetime
+from datetime import datetime , timedelta
 from dotenv import load_dotenv
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
@@ -29,6 +29,11 @@ app=Flask(
     static_url_path="/static"
 )
 app.secret_key=os.getenv("secret_key")
+
+@app.before_request
+def before_request():
+    session.permanent = True
+    app.permanent_session_lifetime = timedelta(days=30)  # 設定 session 的有效期限
 
 #index_page
 @app.route("/")
