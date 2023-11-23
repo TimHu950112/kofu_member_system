@@ -11,6 +11,13 @@
 
 ![Function_page](https://i.imgur.com/G9jVZQD.png)
 
+>Environment Required
+1. Mongodb -> mongodb
+2. Flask_session_secret_key -> secret_key
+3. LineBot_Access_Key -> line_access
+4. LineBot_Secret_Key -> line_secret
+5. Line_Notify_Key -> line_notify
+
 
 ##  Story
 
