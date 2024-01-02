@@ -220,7 +220,7 @@ def check_old():
         if member_status == True:
             flash("已經是新會員")
             return render_template("check_old.html")
-        if member_status == None:
+        if member_status == False:
             return render_template(
                 "add_new.html", phone=session["phone"], member_name="請輸入名稱"
             )
