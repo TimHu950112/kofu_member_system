@@ -215,9 +215,12 @@ def logout():
 def check_old():
     if "member_data" in session:
         session["phone"] = request.form["phone"]
+        print("session_log:")
+        print(session["phone"])
         member_status = Member.check("add", session["phone"])
         print(member_status)
         if member_status == True:
+            print('已經是新會員')
             flash("已經是新會員")
             return render_template("check_old.html")
         if member_status == False:
