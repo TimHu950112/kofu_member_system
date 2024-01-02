@@ -225,7 +225,7 @@ def check_old():
             return render_template("check_old.html")
         if member_status == False:
             return render_template(
-                "add_new.html", phone=session["phone"], member_name="請輸入名稱"
+                "add_new.html", phone=session["phone"], member_name=""
             )
         flash("舊會員" + member_status + "請確認是否註冊為永久會員")
         return render_template(
