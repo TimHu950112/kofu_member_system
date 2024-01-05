@@ -88,6 +88,10 @@ class Member:
             if len(predictions) >= 3:
                 break
         return predictions
+    def count():
+        collection = db.new_2024
+        result = list(collection.find({}))
+        return len(result)
 
 
 class Order:

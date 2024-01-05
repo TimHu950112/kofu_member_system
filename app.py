@@ -79,7 +79,8 @@ def error():
 def add_page():
     if "member_data" in session:
         nickname = session["member_data"]["nickname"]
-        return render_template("check_old.html", nickname=nickname)
+        member_num=Member.count()
+        return render_template("check_old.html", nickname=nickname, member_num=member_num)
     flash("請先登入")
     return redirect("/")
 
