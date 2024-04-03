@@ -47,8 +47,8 @@ class Member:
 
         # search_function
         if way == "search":
-            if result != None:
-                return result["member_name"]
+            # if result != None:
+            #     return result["member_name"]
             if result_2024 != None:
                 return result_2024["member_name"]
             return False
