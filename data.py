@@ -88,6 +88,7 @@ class Member:
             if len(predictions) >= 3:
                 break
         return predictions
+
     def count():
         collection = db.new_2024
         result = list(collection.find({}))
@@ -165,7 +166,9 @@ class Order:
         )
 
     def check(order_number):
-        Order.notify("\n" + "【編號】" + str(order_number) + "\n【取貨通知】" + "取貨成功")
+        Order.notify(
+            "\n" + "【編號】" + str(order_number) + "\n【取貨通知】" + "取貨成功"
+        )
         collection = db.order
         collection.update_one(
             {"order-number": int(order_number)}, {"$set": {"status": "1"}}
@@ -218,6 +221,8 @@ class Coffee:
         collection = db.coffee
         result = list(collection.find({"phone": phone}))
         print("result", result)
+        if int(number) < 10:
+            Line.save_data("寄杯異常")
         if len(result) != 0:
             number_1 = result[0]["left"][item] + int(number)
             collection.update_one(
