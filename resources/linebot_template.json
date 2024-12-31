@@ -1,0 +1,215 @@
+{
+  "type": "bubble",
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "image",
+        "url": "https://i.imgur.com/x7wWe2y.jpeg",
+        "align": "center",
+        "offsetTop": "-20px",
+        "size": "xl"
+      },
+      {
+        "type": "text",
+        "text": "消費確認明細",
+        "weight": "bold",
+        "color": "#e29ea1",
+        "size": "sm"
+      },
+      {
+        "type": "text",
+        "text": "愛八路咖啡",
+        "weight": "bold",
+        "size": "xxl",
+        "margin": "md"
+      },
+      {
+        "type": "text",
+        "text": "200基隆市仁愛區劉銘傳路6巷25-32號",
+        "size": "xs",
+        "color": "#aaaaaa",
+        "wrap": true
+      },
+      {
+        "type": "separator",
+        "margin": "xxl"
+      },
+      {
+        "type": "box",
+        "layout": "vertical",
+        "margin": "xxl",
+        "spacing": "sm",
+        "contents": [
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "contents": [
+              {
+                "type": "text",
+                "text": "品項",
+                "size": "sm",
+                "color": "#555555",
+                "weight": "bold"
+              },
+              {
+                "type": "text",
+                "text": "取杯",
+                "align": "end",
+                "size": "sm",
+                "color": "#555555",
+                "weight": "bold"
+              },
+              {
+                "type": "text",
+                "text": "寄杯",
+                "align": "end",
+                "color": "#555555",
+                "size": "sm",
+                "weight": "bold"
+              }
+            ]
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "contents": [
+              {
+                "type": "text",
+                "text": "70元品項",
+                "size": "sm",
+                "color": "#555555",
+                "flex": 0
+              },
+              {
+                "type": "text",
+                "text": "0",
+                "size": "sm",
+                "color": "#111111",
+                "align": "end"
+              },
+              {
+                "type": "text",
+                "text": "0",
+                "align": "end",
+                "color": "#111111",
+                "size": "sm",
+                "decoration": "none"
+              }
+            ]
+          },
+          {
+            "type": "separator",
+            "margin": "xxl"
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "margin": "xxl",
+            "contents": [
+              {
+                "type": "text",
+                "text": "品項",
+                "size": "sm",
+                "color": "#555555"
+              },
+              {
+                "type": "text",
+                "text": "0項",
+                "size": "sm",
+                "color": "#111111",
+                "align": "end"
+              }
+            ]
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "contents": [
+              {
+                "type": "text",
+                "text": "小計",
+                "size": "sm",
+                "color": "#555555"
+              },
+              {
+                "type": "text",
+                "text": "0元",
+                "size": "sm",
+                "color": "#555555",
+                "align": "end"
+              }
+            ]
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "contents": [
+              {
+                "type": "text",
+                "text": "支付方式",
+                "size": "sm",
+                "color": "#555555"
+              },
+              {
+                "type": "text",
+                "text": "寄杯",
+                "size": "sm",
+                "color": "#555555",
+                "align": "end"
+              }
+            ]
+          },
+          {
+            "type": "separator",
+            "margin": "xxl"
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "contents": [
+              {
+                "type": "text",
+                "text": "謝謝光臨",
+                "color": "#555555",
+                "align": "center",
+                "size": "md"
+              }
+            ]
+          },
+          {
+            "type": "separator",
+            "margin": "md"
+          }
+        ]
+      },
+      {
+        "type": "box",
+        "layout": "horizontal",
+        "margin": "md",
+        "contents": [
+          {
+            "type": "text",
+            "text": "PAYMENT ID",
+            "size": "xs",
+            "color": "#aaaaaa",
+            "flex": 0
+          },
+          {
+            "type": "text",
+            "text": "#743289384279",
+            "color": "#aaaaaa",
+            "size": "xs",
+            "align": "end"
+          }
+        ]
+      }
+    ]
+  },
+  "styles": {
+    "footer": {
+      "separator": true
+    }
+  }
+}

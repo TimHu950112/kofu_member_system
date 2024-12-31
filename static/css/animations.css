@@ -1,0 +1,58 @@
+.hover-amplify {
+    transition: 0.3s;
+
+}
+
+.hover-amplify:hover {
+    scale: 1.05
+}
+
+.hover-amplify:focus {
+    scale: 1.05
+}
+
+@keyframes floating {
+    0% {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0px);
+        opacity: 1;
+    }
+}
+
+.animation-floating {
+    animation-name: floating;
+    animation-duration: .3s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-out;
+}
+
+.animation-shaking {
+    transform: rotate(-30deg);
+    animation: shaking 1s infinite ease-in;
+}
+
+@keyframes shaking {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    25% {
+        transform: rotate(30deg);
+    }
+
+    50% {
+        transform: rotate(0deg);
+    }
+
+    75% {
+        transform: rotate(-30deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}

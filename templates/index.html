@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+{%block title%}公告{%endblock%}
+{% block style %}
+<style>
+    /* Moon Orbit Animation */
+    @keyframes orbit {
+        0% {
+            transform: rotate(0deg) translateX(7rem) rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg) translateX(7rem) rotate(-360deg);
+        }
+    }
+
+    @keyframes beat {
+        0% {
+            scale: 1.0
+        }
+
+        50% {
+            scale: 1.03
+        }
+
+        100% {
+            scale: 1.0
+        }
+    }
+
+    .earth {
+        width: 15rem;
+        position: relative;
+        z-index: 1;
+        /* Makes sure earth is on top */
+    }
+
+    .moon1 {
+        width: 5rem;
+        position: absolute;
+        top: 30%;
+        left: 30%;
+        transform-origin: -100rem center;
+        /* Moon orbit radius */
+        animation: orbit 6s infinite linear 0s;
+    }
+
+    .sun {
+        width: 30rem;
+        position: absolute;
+        left: 0;
+        top: 0;
+        transform: translate(-45%, -45%);
+    }
+
+    .saturn {
+        width: 15rem;
+        position: absolute;
+        left: 80%;
+        top: 0;
+        transform: translate(-50%, -50%);
+    }
+
+    .moon2 {
+        width: 5rem;
+        position: absolute;
+        top: 30%;
+        left: 30%;
+        transform-origin: -100rem center;
+        /* Moon orbit radius */
+        animation: orbit 6s infinite linear 2s;
+    }
+
+    .moon3 {
+        width: 5rem;
+        position: absolute;
+        top: 30%;
+        left: 30%;
+        transform-origin: -100rem center;
+        /* Moon orbit radius */
+        animation: orbit 6s infinite linear 4s;
+    }
+
+    .moon4 {
+        width: 5rem;
+        position: absolute;
+        top: 30%;
+        left: 30%;
+        transform-origin: -100rem center;
+        /* Moon orbit radius */
+        animation: orbit 8s infinite linear 6s;
+    }
+
+    .animation-beat-infinite {
+        animation: beat 1s infinite ease-out;
+
+    }
+</style>
+
+{% endblock style %}
+{% block content %}
+<section class="section fw-bold pt-3 px-lg-5 px-4 overflow-y-scroll" id="ask" style="max-height: 100vh;">
+    <div class="d-flex justify-content-start">
+        <img src="/static/img/logo.png" alt="" style="width: 50px;height:100%;">
+        <h2 class="m-3 fw-bolder">口福食品</h2>
+    </div>
+    <div class="form-floating mt-2 mb-3 ">
+        <input type="email" class="form-control shadow" id="floatingInput" placeholder="name@example.com"
+            style="border-radius: 1.2rem;">
+        <label for=" floatingInput" class="d-inline-flex justify-content-center align-items-center"
+            style="font-size: 12px;"><ion-icon name="search-outline" style="font-size: 20px;"
+                class="mx-2"></ion-icon><span></span>
+            搜尋公告</span></label>
+    </div>
+    <div class="p-1">
+        <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off">
+        <label class="btn btn-outline-secondary d-inline-flex justify-content-center align-items-center" for="btncheck1"
+            style="font-size:15px;height: 30px;background-color:rgba(242, 242, 242, 0.735);border:0px;border-radius:1.5rem;font-size:12px"><ion-icon
+                name="chevron-down-circle-outline" class="me-1"></ion-icon>所有公告</label>
+
+        <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off">
+        <label class="btn btn-outline-secondary d-inline-flex justify-content-center align-items-center" for="btncheck2"
+            style="font-size:15px;height: 30px;background-color:rgba(242, 242, 242, 0.735);border:0px;border-radius:1.5rem;font-size:12px"><ion-icon
+                name="close-circle-outline" class="me-1"></ion-icon>歷史公告</label>
+    </div>
+    <p class="m-2">公告欄</p>
+    <div class="shadow pt-2 p-2 mt-2 mb-4 d-flex justify-content-between align-items-center position-relative z-0"
+        style="border-radius: 1.2rem;">
+        <div class="m-0" style="font-size: 10px; color:rgba(76, 76, 76, 0.502)">
+            <p class="ms-2 mt-0 mb-0" style="font-size: 15px; color:black;">系統 • 更新公告</p>
+            <p class="ms-2 mt-0 mb-0">版本號碼 • v1.2.1
+                <br>更新時間 • 2024.11.28<br>備註：修復index連結錯誤
+            </p>
+        </div>
+        <ion-icon name="cog-outline" class="img img-fluid me-1 z-1 text-dark" alt=""
+            style="border-radius:0.7rem;width:30px;height:30px"></ion-icon>
+
+        <div class="shadow position-absolute translate-middle z-3 d-inline-flex align-items-center justify-content-center  top-100 start-100"
+            style=" border-radius:50%; width: 35px;height: 35px;background-color:white;">
+            <ion-icon name="send-outline" style="font-size: 18px;"></ion-icon>
+        </div>
+    </div>
+    <div class="shadow pt-2 p-2 mt-2 mb-4 d-flex justify-content-between align-items-center position-relative z-0"
+        style="border-radius: 1.2rem;">
+        <div class="m-0" style="font-size: 10px; color:rgba(76, 76, 76, 0.502)">
+            <p class="ms-2 mt-0 mb-0" style="font-size: 15px; color:black;">系統 • 更新公告</p>
+            <p class="ms-2 mt-0 mb-0">版本號碼 • v1.2.0
+                <br>更新時間 • 2024.11.25<br>備註：寄杯系統
+            </p>
+        </div>
+        <ion-icon name="cog-outline" class="img img-fluid me-1 z-1 text-dark" alt=""
+            style="border-radius:0.7rem;width:30px;height:30px"></ion-icon>
+
+        <div class="shadow position-absolute translate-middle z-3 d-inline-flex align-items-center justify-content-center  top-100 start-100"
+            style=" border-radius:50%; width: 35px;height: 35px;background-color:white;">
+            <ion-icon name="send-outline" style="font-size: 18px;"></ion-icon>
+        </div>
+    </div>
+    <div class="shadow pt-2 p-2 mt-2 mb-4 d-flex justify-content-between align-items-center position-relative z-0"
+        style="border-radius: 1.2rem;">
+        <div class="m-0" style="font-size: 10px; color:rgba(76, 76, 76, 0.502)">
+            <p class="ms-2 mt-0 mb-0" style="font-size: 15px; color:black;">系統 • 更新公告</p>
+            <p class="ms-2 mt-0 mb-0">版本號碼 • v1.1.0
+                <br>更新時間 • 2024.11.18<br>備註：斷線提示功能測試
+            </p>
+        </div>
+        <ion-icon name="cog-outline" class="img img-fluid me-1 z-1 text-dark" alt=""
+            style="border-radius:0.7rem;width:30px;height:30px"></ion-icon>
+
+        <div class="shadow position-absolute translate-middle z-3 d-inline-flex align-items-center justify-content-center  top-100 start-100"
+            style=" border-radius:50%; width: 35px;height: 35px;background-color:white;">
+            <ion-icon name="send-outline" style="font-size: 18px;"></ion-icon>
+        </div>
+    </div>
+    <div class="shadow pt-2 p-2 mt-2 mb-4 d-flex justify-content-between align-items-center position-relative z-0"
+        style="border-radius: 1.2rem;">
+        <div class="m-0" style="font-size: 10px; color:rgba(76, 76, 76, 0.502)">
+            <p class="ms-2 mt-0 mb-0" style="font-size: 15px; color:black;">系統 • 更新公告</p>
+            <p class="ms-2 mt-0 mb-0">版本號碼 • v1.0.0
+                <br>更新時間 • 2024.11.12<br>備註：初始測試版本
+            </p>
+        </div>
+        <ion-icon name="cog-outline" class="img img-fluid me-1 z-1 text-dark" alt=""
+            style="border-radius:0.7rem;width:30px;height:30px"></ion-icon>
+
+        <div class="shadow position-absolute translate-middle z-3 d-inline-flex align-items-center justify-content-center  top-100 start-100"
+            style=" border-radius:50%; width: 35px;height: 35px;background-color:white;">
+            <ion-icon name="send-outline" style="font-size: 18px;"></ion-icon>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

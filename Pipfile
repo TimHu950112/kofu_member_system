@@ -1,0 +1,26 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+certifi = "*"
+flask = "*"
+flask-restful = "*"
+jinja2 = "*"
+pymongo = "*"
+pytz = "*"
+datetime = "*"
+python-dotenv = "*"
+requests = "*"
+line-bot-sdk = "*"
+google-oauth2-tool = "*"
+pillow = "*"
+bcrypt = "*"
+qrcode = "*"
+google-auth-oauthlib = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.11"

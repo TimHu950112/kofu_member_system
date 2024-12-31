@@ -1,0 +1,162 @@
+{%extends 'base.html'%}
+{%block title%}我的{%endblock%}
+{%block content%}
+<section class="section fw-bold pt-3 px-lg-5 px-4 overflow-y-scroll" id="my"
+    style="max-height: 100vh; padding-bottom:210px;">
+    <div class="d-flex justify-content-between">
+        <h2 class="m-3 fw-bolder">我的</h2>
+        <ion-icon class="m-3" name="qr-code-outline" style="font-size:35px" data-bs-target="#exampleModalToggle"
+            data-bs-toggle="modal"></ion-icon>
+    </div>
+    <div class="form-floating mb-3 ">
+        <input type="email" class="form-control shadow" id="floatingInput" placeholder="name@example.com"
+            style="border-radius: 1.2rem;">
+        <label for=" floatingInput" class="d-inline-flex justify-content-center align-items-center"
+            style="font-size: 12px;"><ion-icon name="search-outline" style="font-size: 20px;"
+                class="mx-2"></ion-icon><span></span>
+            搜尋設定</span></label>
+    </div>
+    <div class="p-1">
+        <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off">
+        <label class="btn btn-outline-secondary d-inline-flex justify-content-center align-items-center" for="btncheck1"
+            style="font-size:15px;height: 30px;background-color:rgba(242, 242, 242, 0.735);border:0px;border-radius:1.5rem;font-size:12px"><ion-icon
+                name="cog-outline" class="me-1"></ion-icon>系統設定</label>
+
+        <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off">
+        <label class="btn btn-outline-secondary d-inline-flex justify-content-center align-items-center" for="btncheck2"
+            style="font-size:15px;height: 30px;background-color:rgba(242, 242, 242, 0.735);border:0px;border-radius:1.5rem;font-size:12px"><ion-icon
+                name="heart-outline" class="me-1"></ion-icon>偏好設定</label>
+    </div>
+    <p class="m-2">個人資料</p>
+    <div class="shadow-sm pt-2 p-2 mt-3 d-flex justify-content-between align-items-center position-relative z-0"
+        style="border-radius: 1.2rem;">
+        <div class="d-inline-flex justify-content-start align-items-center ">
+            <ion-icon name="person-outline" class="mx-2" style="font-size:25px"></ion-icon>
+            <p class="ms-2 mt-0 mb-0" style="font-size: 15px; color:black;">我的帳號</p>
+        </div>
+        <ion-icon name="chevron-forward-outline" style="font-size:25px"></ion-icon>
+    </div>
+    <div class="shadow-sm pt-2 p-2 mt-3 d-flex justify-content-between align-items-center position-relative z-0"
+        style="border-radius: 1.2rem;">
+        <div class="d-inline-flex justify-content-start align-items-center">
+            <ion-icon name="lock-closed-outline" class="mx-2" style="font-size:25px"></ion-icon>
+            <p class="ms-2 mt-0 mb-0" style="font-size: 15px; color:black;">隱私設定</p>
+        </div>
+        <ion-icon name="chevron-forward-outline" style="font-size:25px"></ion-icon>
+    </div>
+    <div class="shadow-sm pt-2 p-2 mt-3 d-flex justify-content-between align-items-center position-relative z-0"
+        style="border-radius: 1.2rem;">
+        <div class="d-inline-flex justify-content-start align-items-center">
+            <ion-icon name="qr-code-outline" class="mx-2" style="font-size:25px"></ion-icon>
+            <p class="ms-2 mt-0 mb-0" style="font-size: 15px; color:black;">QRCODE 分享設定</p>
+        </div>
+        <ion-icon name="chevron-forward-outline" style="font-size:25px"></ion-icon>
+    </div>
+    <p class="m-2 mt-4">系統設定</p>
+    <div class="shadow-sm pt-2 p-2 mt-3 d-flex justify-content-between align-items-center position-relative z-0"
+        style="border-radius: 1.2rem;">
+        <div class="d-inline-flex justify-content-start align-items-center ">
+            <ion-icon name="chatbubbles-outline" class="mx-2" style="font-size:25px"></ion-icon>
+            <p class="ms-2 mt-0 mb-0" style="font-size: 15px; color:black;">AI 對話設定</p>
+        </div>
+        <ion-icon name="chevron-forward-outline" style="font-size:25px"></ion-icon>
+    </div>
+    <div class="shadow-sm pt-2 p-2 mt-3 d-flex justify-content-between align-items-center position-relative z-0"
+        style="border-radius: 1.2rem;">
+        <div class="d-inline-flex justify-content-start align-items-center">
+            <ion-icon name="notifications-outline" class="mx-2" style="font-size:25px"></ion-icon>
+            <p class="ms-2 mt-0 mb-0" style="font-size: 15px; color:black;">通知設定</p>
+        </div>
+        <ion-icon name="chevron-forward-outline" style="font-size:25px"></ion-icon>
+    </div>
+    <p class="m-2 mt-4">進階會員</p>
+    <div class="shadow-sm pt-2 p-2 mt-3 d-flex justify-content-between align-items-center position-relative z-0"
+        style="border-radius: 1.2rem;">
+        <div class="d-inline-flex justify-content-start align-items-center ">
+            <ion-icon name="card-outline" class="mx-2" style="font-size:25px"></ion-icon>
+            <p class="ms-2 mt-0 mb-0" style="font-size: 15px; color:black;">進階會員設定</p>
+        </div>
+        <ion-icon name="chevron-forward-outline" style="font-size:25px"></ion-icon>
+    </div>
+    <p class="m-2 mt-4">意見反饋</p>
+    <div class="shadow-sm pt-2 p-2 mt-3 d-flex justify-content-between align-items-center position-relative z-0"
+        style="border-radius: 1.2rem;">
+        <div class="d-inline-flex justify-content-start align-items-center ">
+            <ion-icon name="chatbox-outline" class="mx-2" style="font-size:25px"></ion-icon>
+            <p class="ms-2 mt-0 mb-0" style="font-size: 15px; color:black;">意見反饋</p>
+        </div>
+        <ion-icon name="chevron-forward-outline" style="font-size:25px"></ion-icon>
+    </div>
+    <p class="m-2 mt-4">登出</p>
+    <div class="shadow-sm pt-2 p-2 mt-3 d-flex justify-content-between align-items-center position-relative z-0"
+        style="border-radius: 1.2rem;" onclick="window.location='/logout'">
+        <div class="d-inline-flex justify-content-start align-items-center ">
+            <ion-icon name="log-out-outline" class="mx-2" style="font-size:25px"></ion-icon>
+            <p class="ms-2 mt-0 mb-0" style="font-size: 15px; color:black;">登出</p>
+        </div>
+        <ion-icon name="chevron-forward-outline" style="font-size:25px"></ion-icon>
+    </div>
+</section>
+<!-- qrcode modal -->
+<div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
+    tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 fw-bold" id="staticBackdropLabel">分享我的資料</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h5 class="text-center fw-bold">請先仔細閱圖分享條款</h5>
+                <p class=" overflow-scroll my-3 p-3" style="max-height: 400px; border:1px solid;border-radius:1.2rem">
+                    歡迎使用本應用程式的QR Code分享功能！在使用該功能前，請您仔細閱讀以下條款。當您使用此功能時，表示您已同意並理解以下內容：<br>
+
+                    <br><span class=" fw-bold">分享範圍</span><br><br>
+                    您可以通過本應用程式生成QR Code，將您的個人資料、健康紀錄、報表分析等資料分享給諮商師或其他人。您應自行確認並理解被分享的資料內容及對象。<br>
+
+                    <br><span class=" fw-bold">個資保護</span><br><br>
+                    我們重視您的隱私，並承諾依據《個人資料保護法》及相關法規保護您的個人資料。本應用程式僅提供分享的技術手段，無法控制或追蹤被分享的資料如何被接收方使用。因此，請您在分享前審慎考慮對象並確認其信任度。<br>
+
+                    <br><span class=" fw-bold">用戶的責任</span><br><br>
+                    您同意，當您選擇將個人資料或紀錄分享給他人時，您應自行承擔可能的風險和責任。我們建議您僅將資料分享給受信任的對象。若因分享而導致的資料洩露、濫用或其他損害，您將負全部責任，本應用程式及開發商不承擔任何責任。<br>
+
+                    <br><span class=" fw-bold">分享的同意</span><br><br>
+                    使用本應用程式生成QR Code並分享資料，即表示您明確同意分享的行為，並知悉由此產生的風險。本應用程式及開發商不對分享後的任何後果負責。<br>
+
+                    <br><span class=" fw-bold">條款的變更</span><br><br>
+                    本應用程式有權隨時修改本條款，修改後的條款將在本應用程式中公告。您繼續使用分享功能即表示您接受修改後的條款。<br>
+                </p>
+                <h5 class="text-center fw-bold">若您已閱讀並同意上述分享條款<br>請點選下方「我同意」按鈕。</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">不同意</button>
+                <button class="btn btn-primary" data-bs-target="#exampleModalToggle2"
+                    data-bs-toggle="modal">我同意</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 fw-bold" id="exampleModalToggleLabel2">QRCODE</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img class="img img-fluid p-3" src="https://i.imgur.com/iJZa4tC.png" alt="你是不是沒有開成localhost">
+                <label class="btn btn-outline-secondary d-inline-flex justify-content-center align-items-center"
+                    for="btncheck1"
+                    style="font-size:15px;height: 30px;background-color:rgba(242, 242, 242, 0.735);border:0px;border-radius:1.5rem;font-size:12px"><ion-icon
+                        name="qr-code-outline" class="me-1"></ion-icon>QRCODE分享設定</label>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">完成</button>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}
+{%block script%}
+{%endblock script%}

@@ -1,0 +1,102 @@
+{%extends 'base.html'%}
+{%block title%}會員{%endblock%}
+{%block content%}
+<section class="section fw-bold pt-3 px-lg-5 px-4 overflow-y-scroll" id="ask" style="max-height: 100vh;">
+    <div class="d-flex justify-content-between">
+        <h2 class="m-3 fw-bolder">會員</h2>
+        <ion-icon class="mt-2" name="add-outline" style="font-size:35px" data-bs-target="#exampleModalToggle"
+            data-bs-toggle="modal"></ion-icon>
+    </div>
+    <div class="form-floating mb-3 ">
+        <input type="text" class="form-control shadow" id="customer_input" placeholder="name@example.com"
+            style="border-radius: 1.2rem;">
+        <label for=" floatingInput" class="d-inline-flex justify-content-center align-items-center"
+            style="font-size: 12px;"><ion-icon name="search-outline" style="font-size: 20px;"
+                class="mx-2"></ion-icon><span></span>
+            搜尋會員</span></label>
+    </div>
+    <div class="p-1">
+        <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off">
+        <label class="btn btn-outline-secondary d-inline-flex justify-content-center align-items-center" for="btncheck1"
+            style="font-size:15px;height: 30px;background-color:rgba(242, 242, 242, 0.735);border:0px;border-radius:1.5rem;font-size:12px"><ion-icon
+                name="chevron-down-circle-outline" class="me-1"></ion-icon>生效會員</label>
+
+        <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off">
+        <label class="btn btn-outline-secondary d-inline-flex justify-content-center align-items-center" for="btncheck2"
+            style="font-size:15px;height: 30px;background-color:rgba(242, 242, 242, 0.735);border:0px;border-radius:1.5rem;font-size:12px"><ion-icon
+                name="close-circle-outline" class="me-1"></ion-icon>失效會員</label>
+    </div>
+    <p class="m-2">系統 搜尋預測</p>
+    <div class="text-center" id="customer_result">
+        <h5>無結果</h5>
+    </div>
+
+</section>
+<!-- add-customer modal -->
+<div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
+    tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 fw-bold" id="staticBackdropLabel">加入會員</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="phone_area">
+                    <div class="form-floating mb-3 ">
+                        <input type="text" class="form-control shadow" id="add_customer_phone"
+                            placeholder="name@example.com" style="border-radius: 1.2rem;">
+                        <label for=" floatingInput" class="d-inline-flex justify-content-center align-items-center"
+                            style="font-size: 12px;"><ion-icon name="call-outline" style="font-size: 20px;"
+                                class="mx-2"></ion-icon><span></span>
+                            電話號碼</span></label>
+                    </div>
+                </div>
+                <div class="form-floating mb-3 ">
+                    <input type="text" class="form-control shadow" id="add_customer_name" placeholder="name@example.com"
+                        style="border-radius: 1.2rem;">
+                    <label for=" floatingInput" class="d-inline-flex justify-content-center align-items-center"
+                        style="font-size: 12px;"><ion-icon name="id-card-outline" style="font-size: 20px;"
+                            class="mx-2"></ion-icon><span></span>
+                        會員姓名</span></label>
+                </div>
+                <div class="form-check ms-2">
+                    <input class="form-check-input" type="checkbox" id="permanent_status">
+                    <label class="form-check-label fw-bold" style="font-size: 13px;" for="flexCheckDefault">
+                        永久會員
+                    </label>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button class="btn btn-primary" id="add_customer">加入</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 fw-bold" id="exampleModalToggleLabel2">QRCODE</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img class="img img-fluid p-3" src="https://i.imgur.com/iJZa4tC.png" alt="你是不是沒有開成localhost">
+                <label class="btn btn-outline-secondary d-inline-flex justify-content-center align-items-center"
+                    for="btncheck1"
+                    style="font-size:15px;height: 30px;background-color:rgba(242, 242, 242, 0.735);border:0px;border-radius:1.5rem;font-size:12px"><ion-icon
+                        name="qr-code-outline" class="me-1"></ion-icon>QRCODE分享設定</label>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">完成</button>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}
+{%block script%}
+<script src="/static/js/customer.js"></script>
+{%endblock script%}

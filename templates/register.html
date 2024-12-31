@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>註冊頁面</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootstrap CSS v5.2.1 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/static/css/template.css" />
+</head>
+
+<body class="login-body">
+    <header>
+        <!-- place navbar here -->
+    </header>
+    <main>
+        <div class="container-fluid" style="height: 100vh;">
+
+            <div class="row justify-content-center align-items-center">
+                <div class="col-md-5 col-12 text-md-start text-center mt-md-0 mt-5">
+                    <h1 style="color: hsl(218, 81%, 95%)">Iteation Studio</h1>
+                    <h2 style="color: hsl(218, 81%, 75%)">The best offer for your business</h2>
+                </div>
+                <div class="col-md-4 col-12 py-md-5 position-relative text-center">
+                    <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
+                    <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
+                    <div class="middle-board p-5 rounded-2 mt-5">
+                        <div id="message" class="alert alert-danger mt-3" style="display: none;"></div>
+                        <h2 class="text-center" style="font-weight:500;">註冊帳號</h2>
+                        <div class="form-floating mb-3 mt-5">
+                            <input type="text" class="form-control" id="username" placeholder="name@example.com">
+                            <label for="floatingInput">請輸入帳號</label>
+                        </div>
+                        <div class="form-floating">
+                            <input type="password" class="form-control" id="password" placeholder="Password">
+                            <label for="floatingPassword">請輸入密碼</label>
+                        </div>
+                        <div class="rounded-2 p-2 mt-4 mb-5 login-button"
+                            style="background-color:rgb(47,92,193); opacity:0.8;" id="register_button">
+                            <b class="text-white text-center">註冊</b>
+                        </div>
+                        <hr class="hr">
+                        <ion-icon name="logo-google" class="icon-button" style="color:gray;"></ion-icon>
+                        <ion-icon name="logo-facebook" class="ms-3 icon-button" style="color:gray;"></ion-icon>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Bootstrap JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+        crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+        integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz"
+        crossorigin="anonymous"></script>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/static/js/register.js"></script>
+</body>
+
+</html>

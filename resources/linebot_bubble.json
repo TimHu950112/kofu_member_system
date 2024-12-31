@@ -1,0 +1,154 @@
+{
+  "type": "bubble",
+  "hero": {
+    "type": "image",
+    "url": "https://i.imgur.com/x7wWe2y.jpeg",
+    "size": "full",
+    "aspectRatio": "20:13",
+    "aspectMode": "fit",
+    "action": {
+      "type": "uri",
+      "uri": "https://line.me/"
+    },
+    "align": "center",
+    "gravity": "center"
+  },
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "spacing": "md",
+    "contents": [
+      {
+        "type": "text",
+        "text": "取杯QRCODE",
+        "wrap": true,
+        "weight": "bold",
+        "gravity": "center",
+        "size": "xl"
+      },
+      {
+        "type": "box",
+        "layout": "vertical",
+        "margin": "lg",
+        "spacing": "sm",
+        "contents": [
+          {
+            "type": "box",
+            "layout": "baseline",
+            "spacing": "sm",
+            "contents": [
+              {
+                "type": "text",
+                "text": "期限",
+                "color": "#aaaaaa",
+                "size": "sm",
+                "flex": 1
+              },
+              {
+                "type": "text",
+                "text": "Monday 25, 9:00PM",
+                "wrap": true,
+                "size": "sm",
+                "color": "#666666",
+                "flex": 4
+              }
+            ]
+          },
+          {
+            "type": "box",
+            "layout": "baseline",
+            "spacing": "sm",
+            "contents": [
+              {
+                "type": "text",
+                "text": "項目",
+                "color": "#aaaaaa",
+                "size": "sm",
+                "flex": 1
+              },
+              {
+                "type": "text",
+                "text": "70元品項1杯",
+                "wrap": true,
+                "color": "#666666",
+                "size": "sm",
+                "flex": 4
+              }
+            ]
+          },
+          {
+            "type": "box",
+            "layout": "baseline",
+            "spacing": "sm",
+            "contents": [
+              {
+                "type": "text",
+                "text": "編號",
+                "color": "#aaaaaa",
+                "size": "sm",
+                "flex": 1
+              },
+              {
+                "type": "text",
+                "text": "001",
+                "wrap": true,
+                "color": "#666666",
+                "size": "sm",
+                "flex": 4
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "box",
+        "layout": "vertical",
+        "margin": "xxl",
+        "contents": [
+          {
+            "type": "image",
+            "url": "https://developers-resource.landpress.line.me/fx/img/linecorp_code_withborder.png",
+            "aspectMode": "cover",
+            "size": "xl",
+            "margin": "md"
+          },
+          {
+            "type": "text",
+            "text": "點我兌換",
+            "wrap": true,
+            "margin": "20px",
+            "size": "md",
+            "weight": "bold",
+            "align": "center",
+            "color": "#e29ea1",
+            "action": {
+            "type": "uri",
+            "label": "action",
+            "uri": "http://google.com"
+            }
+          },
+          {
+            "type": "text",
+            "text": "您可以交由店員掃描QRCODE",
+            "color": "#aaaaaa",
+            "wrap": true,
+            "margin": "20px",
+            "size": "xs",
+            "weight": "bold",
+            "align": "center"
+          },
+          {
+            "type": "text",
+            "text": "或點擊上方連結兌換",
+            "color": "#aaaaaa",
+            "wrap": true,
+            "margin": "none",
+            "size": "xs",
+            "weight": "bold",
+            "align": "center"
+          }
+        ]
+      }
+    ]
+  }
+}
